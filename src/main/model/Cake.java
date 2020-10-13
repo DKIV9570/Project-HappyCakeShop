@@ -21,7 +21,7 @@ public class Cake {
         this.topping = topping;
         price = 0;
         inventory = 0;
-        name = " \" " + cakeBase.getName() + "/" + cream.getName() + "/" + topping.getName() + " cake \"";
+        name = " \" " + cakeBase.getName() + "/" + cream.getName() + "/" + topping.getName() + " cake \" ";
     }
 
     public String getCakeBase() {

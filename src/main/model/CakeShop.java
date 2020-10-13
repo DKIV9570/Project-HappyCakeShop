@@ -87,7 +87,7 @@ public class CakeShop {
         creamInventory.put(cream,creamInventory.get(cream) - number);
         toppingInventory.put(topping,toppingInventory.get(topping) - number);
 
-        String name = " \" " + base.getName() + "/" + cream.getName() + "/" + topping.getName() + " cake \"";
+        String name = " \" " + base.getName() + "/" + cream.getName() + "/" + topping.getName() + " cake \" ";
         if (!cakeInventory.containsKey(name)) {
             Cake newCake = new Cake(base,cream,topping);
             cakeInventory.put(name, newCake);

@@ -5,10 +5,7 @@ import model.Material;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,15 +14,99 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class CakeShopTest {
     private CakeShop testShop;
-    private Map<String,List<Material>> market = new LinkedHashMap();
-    private List<Material> materials = new ArrayList<>();
+    private Material base1 = new Material("base1",10,"cake base",1);
+    private Material base2 = new Material("base2",10,"cake base",2);
+    private Material base3 = new Material("base3",1001,"cake base",3);
+    private Material cream1 = new Material("cream1",10,"cream",1);
+    private Material cream2 = new Material("cream2",10,"cream",2);
+    private Material topping1 = new Material("base1",10,"topping",1);
+    private Material topping2 = new Material("base2",10,"topping",2);
+    private List<Material> bases = Arrays.asList(base1,base2,base3);
+    private List<Material> creams = Arrays.asList(cream1,cream2);
+    private List<Material> toppings = Arrays.asList(topping1,topping2);
+    private Cake cake1 = new Cake(base1,cream1,topping1);
+    private Cake cake2 = new Cake(base2,cream2,topping2);
+
+    private Map<String, List<Material>> market = new LinkedHashMap<>();
 
     @BeforeEach
     void runBefore() {
+        market.put("cake base",bases);
+        market.put("cream",creams);
+        market.put("topping",toppings);
         testShop = new CakeShop(1000,market);
+
+
     }
 
     @Test
     void testConstructor() {
+        for (Material material: testShop.getBaseInventory().keySet()) {
+            assertEquals(testShop.getBaseInventory().get(material),0);
+        }
+        for (Material material: testShop.getCreamInventory().keySet()) {
+            assertEquals(testShop.getCreamInventory().get(material),0);
+        }
+        for (Material material: testShop.getToppingInventory().keySet()) {
+            assertEquals(testShop.getToppingInventory().get(material),0);
+        }
+        assertTrue(testShop.getCakeInventory().isEmpty());
+        assertEquals(testShop.getFunds(),1000);
+    }
+
+    @Test
+    void testBuyMaterial1() {
+        testShop.buyMaterial(base3);
+        assertEquals(testShop.getFunds(),1000);
+        assertEquals(testShop.getBaseInventory().get(base3),0);
+    }
+
+    @Test
+    void testBuyMaterial2() {
+        testShop.buyMaterial(base2);
+        assertEquals(testShop.getFunds(),990);
+        testShop.buyMaterial(cream1);
+        assertEquals(testShop.getFunds(),980);
+        testShop.buyMaterial(topping1);
+        assertEquals(testShop.getFunds(),970);
+        testShop.buyMaterial(base2);
+        assertEquals(testShop.getFunds(),960);
+        assertEquals(testShop.getBaseInventory().get(base2),2);
+        assertEquals(testShop.getCreamInventory().get(cream1),1);
+        assertEquals(testShop.getToppingInventory().get(topping1),1);
+    }
+
+    @Test
+    void testMakeCake() {
+        for (int i = 1; i <= 10; i++) {
+            testShop.buyMaterial(base1);
+            testShop.buyMaterial(cream1);
+            testShop.buyMaterial(topping1);
+
+            testShop.buyMaterial(base2);
+            testShop.buyMaterial(cream2);
+            testShop.buyMaterial(topping2);
+        }
+        testShop.makeCake(base1,cream1,topping1,10,1);
+        testShop.makeCake(base1,cream1,topping1,10,1);
+        String name1 = " \" base1/cream1/topping1 cake \" ";
+        assertEquals(testShop.getCakeInventory().size(),1);
+
+        testShop.makeCake(base2,cream2,topping2,10,2);
+        assertEquals(testShop.getCakeInventory().size(),2);
+
+    }
+
+    @Test
+    void testSellCake1() {
+        Resident resident1 = new Resident(market);
+        Resident resident2 = new Resident(market);
+        List<Resident> town = Arrays.asList(resident1);
+        testShop.buyMaterial(base1);
+        testShop.buyMaterial(cream1);
+        testShop.buyMaterial(topping1);
+        testShop.makeCake(base1,cream1,topping1,10000,1);
+        testShop.sellCake(town);
+        assertEquals(testShop.getCakeInventory().size(),1);
     }
 }

@@ -12,7 +12,7 @@ public class Resident {
 
     private int purchasePower;
     private Map<String,Float> favors = new LinkedHashMap<>();
-    private Cake favoriteCake;
+    private Cake favoriteCake = null;
 
     /*
      * EFFECTS: randomly initialize the purchase power
@@ -29,6 +29,18 @@ public class Resident {
             }
         }
         purchasePower = (int) (Math.random() * (sum / market.size()) + (sum / market.size()));
+    }
+
+    public int getPurchasePower() {
+        return purchasePower;
+    }
+
+    public Cake getFavoriteCake() {
+        return favoriteCake;
+    }
+
+    public Map<String, Float> getFavors() {
+        return favors;
     }
 
     /*
