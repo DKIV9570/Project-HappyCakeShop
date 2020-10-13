@@ -67,11 +67,13 @@ public class Cake {
     }
 
     /*
-     * REQUIRES: number >= 0.
+     * REQUIRES: number >= 0
      * MODIFIES: this
-     * EFFECTS:  consume inventory with given number
+     * EFFECTS:  consume inventory with given number if inventory >= given number
      */
     public void consumeInventory(int number) {
-        inventory -= number;
+        if (inventory >= number) {
+            inventory -= number;
+        }
     }
 }

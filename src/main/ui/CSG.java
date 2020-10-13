@@ -239,9 +239,9 @@ public class CSG {
             }
             System.out.println("You have successfully purchased " + numberToBuy + " " + goodToBuy.getName());
         }
-        System.out.println("Input 1 to keep shopping, input any other key to go back to main menu");
-        String decision = input.next();
-        if (decision == "1") {
+        System.out.println("Input 1 to keep shopping, input any other number to go back to main menu");
+        String decision = input.next().toLowerCase();
+        if (decision.equals("1")) {
             shopping();
         } else {
             mainMenu();
@@ -314,11 +314,11 @@ public class CSG {
      * EFFECTS: set the price for a kind of cake
      */
     public int setPrice(String cakeMade) {
-        int price = 0;
+        int price;
         if (shop.getCakeInventory().containsKey(cakeMade)) {
             System.out.println("Do you want to reset the price? 1 for YES, 2 for No");
             String answer = input.next();
-            if (answer == "1") {
+            if (answer.equals("1")) {
                 System.out.println("How much? Input an number");
                 price = input.nextInt();
             } else {

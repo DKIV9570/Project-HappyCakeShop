@@ -102,12 +102,6 @@ public class CakeShop {
      * EFFECTS: sell cake
      */
     public void sellCake(List<Resident> town) {
-        //if have not set price, set them to 5
-        for (String key : cakeInventory.keySet()) {
-            if (cakeInventory.get(key).getPrice() == 0) {
-                cakeInventory.get(key).setPrice(5); //stub
-            }
-        }
         for (Resident resident: town) {
             Cake cakeBought = resident.purchase(cakeInventory.values());
             if (cakeBought != null) {

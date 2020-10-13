@@ -6,6 +6,7 @@ import java.util.*;
 
 /*
  * Represents a resident in the town.
+ * Note: resident is a Underlying data which not intended to be accessed by players.
  */
 public class Resident {
 
