@@ -73,6 +73,8 @@ public class CakeShop {
                     break;
                 case "topping": toppingInventory.put(material,toppingInventory.get(material) + 1);
                     break;
+                default:
+                    break; //stub
             }
         }
     }
@@ -107,6 +109,8 @@ public class CakeShop {
             if (cakeBought != null) {
                 funds += cakeBought.getPrice();
                 cakeBought.consumeInventory(1);
+            } else {
+                continue; //stub
             }
         }
     }
