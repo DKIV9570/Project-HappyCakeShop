@@ -59,10 +59,6 @@ public class Resident {
                 favoredMost = favorOfCake;
             }
         }
-        if (favoredMost != 0) {
-            return favoriteCake;
-        } else {
-            return null;
-        }
+        return favoriteCake;
     }
 }

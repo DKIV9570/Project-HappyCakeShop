@@ -21,6 +21,9 @@ public class CakeShopTest {
     private Material cream2 = new Material("cream2",10,"cream",2);
     private Material topping1 = new Material("base1",10,"topping",1);
     private Material topping2 = new Material("base2",10,"topping",2);
+
+    private Material notAMaterial = new Material("none",10,"none",1);
+
     private List<Material> bases = Arrays.asList(base1,base2,base3);
     private List<Material> creams = Arrays.asList(cream1,cream2);
     private List<Material> toppings = Arrays.asList(topping1,topping2);
@@ -57,7 +60,8 @@ public class CakeShopTest {
     @Test
     void testBuyMaterial1() {
         testShop.buyMaterial(base3);
-        assertEquals(testShop.getFunds(),1000);
+        testShop.buyMaterial(notAMaterial);
+        assertEquals(testShop.getFunds(),990);
         assertEquals(testShop.getBaseInventory().get(base3),0);
     }
 
