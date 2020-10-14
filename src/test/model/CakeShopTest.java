@@ -19,8 +19,8 @@ public class CakeShopTest {
     private Material base3 = new Material("base3",1001,"cake base",3);
     private Material cream1 = new Material("cream1",10,"cream",1);
     private Material cream2 = new Material("cream2",10,"cream",2);
-    private Material topping1 = new Material("base1",10,"topping",1);
-    private Material topping2 = new Material("base2",10,"topping",2);
+    private Material topping1 = new Material("topping1",10,"topping",1);
+    private Material topping2 = new Material("topping2",10,"topping",2);
 
     private Material notAMaterial = new Material("none",10,"none",1);
 
@@ -67,6 +67,12 @@ public class CakeShopTest {
 
     @Test
     void testBuyMaterial2() {
+        testShop.buyMaterial(notAMaterial);
+        assertEquals(testShop.getFunds(),990);
+    }
+
+    @Test
+    void testBuyMaterial3() {
         testShop.buyMaterial(base2);
         assertEquals(testShop.getFunds(),990);
         testShop.buyMaterial(cream1);
@@ -112,5 +118,18 @@ public class CakeShopTest {
         testShop.makeCake(base1,cream1,topping1,10000,1);
         testShop.sellCake(town);
         assertEquals(testShop.getCakeInventory().size(),1);
+    }
+
+    @Test
+    void testSellCake2() {
+        Resident resident1 = new Resident(market);
+        List<Resident> town = Arrays.asList(resident1);
+        testShop.buyMaterial(base1);
+        testShop.buyMaterial(cream1);
+        testShop.buyMaterial(topping1);
+        testShop.makeCake(base1,cream1,topping1,1,1);
+        String nameOfCake = " \" " + base1.getName() + "/" + cream1.getName() + "/" + topping1.getName() + " cake \" ";
+        testShop.sellCake(town);
+        assertEquals(testShop.getCakeInventory().get(nameOfCake).getInventory(),0);
     }
 }

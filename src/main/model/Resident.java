@@ -53,8 +53,11 @@ public class Resident {
             float favorOfCake = favors.get(cake.getCakeBase()) + favors.get(cake.getCream())
                     + favors.get(cake.getTopping());
 
-            if ((favorOfCake > favoredMost) && (cake.getInventory() >= 1)
-                    && (cake.getPrice() <= favorOfCake * purchasePower)) {
+            boolean likesMore = favorOfCake > favoredMost;
+            boolean haveInventory = cake.getInventory() >= 1;
+            boolean willingToBuy = cake.getPrice() <= favorOfCake * purchasePower;
+
+            if (likesMore && haveInventory && willingToBuy) {
                 favoriteCake = cake;
                 favoredMost = favorOfCake;
             }
