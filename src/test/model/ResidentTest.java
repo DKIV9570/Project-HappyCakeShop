@@ -45,8 +45,8 @@ public class ResidentTest {
     @Test
     void testConstructor() {
         assertEquals(testResident.getFavoriteCake(),null);
-        assertTrue(testResident.getPurchasePower() <= 40);
-        assertTrue(testResident.getPurchasePower() >= 20);
+        assertTrue(testResident.getPurchasePower() <= 60);
+        assertTrue(testResident.getPurchasePower() >= 30);
         for (String favor:testResident.getFavors().keySet()) {
             assertTrue(testResident.getFavors().get(favor) <= 1);
             assertTrue(testResident.getFavors().get(favor) >= 0);
@@ -56,7 +56,7 @@ public class ResidentTest {
     @Test
     void testPurchase1() {
         cake1.setPrice(121);
-        cake1.addInventory(1);
+        cake1.addInventory(0);
         cake2.setPrice(121);
         cake2.addInventory(1);
         cake3.setPrice(121);
@@ -66,6 +66,7 @@ public class ResidentTest {
         cakeInventory.add(cake3);
         assertEquals(testResident.purchase(cakeInventory),null);
     }
+
     @Test
     void testPurchase2() {
         cake1.setPrice(10);
@@ -88,4 +89,10 @@ public class ResidentTest {
         assertEquals(testResident.purchase(cakeInventory),cake1);
     }
 
+    @Test
+    void testPurchase4() {
+        cake1.setPrice(1);
+        cakeInventory.add(cake1);
+        assertEquals(testResident.purchase(cakeInventory),null);
+    }
 }
