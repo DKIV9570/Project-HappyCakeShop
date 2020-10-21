@@ -27,6 +27,7 @@ public class CakeShopTest {
     private List<Material> bases = Arrays.asList(base1,base2,base3);
     private List<Material> creams = Arrays.asList(cream1,cream2);
     private List<Material> toppings = Arrays.asList(topping1,topping2);
+
     private Cake cake1 = new Cake(base1,cream1,topping1);
     private Cake cake2 = new Cake(base2,cream2,topping2);
 

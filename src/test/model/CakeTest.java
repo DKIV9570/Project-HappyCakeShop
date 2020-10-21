@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 /*
  * Unit tests for the cake class
  */
@@ -16,7 +15,6 @@ public class CakeTest {
     private Material material1 = new Material("a",20,"cake base",1);
     private Material material2 = new Material("b",10,"cream",2);
     private Material material3 = new Material("c",5,"topping",3);
-
 
     @BeforeEach
     void runBefore() {

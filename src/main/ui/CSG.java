@@ -91,7 +91,6 @@ public class CSG {
         this.totalround = roundInput;
     }
 
-
     /*
      * MODIFIES:this
      * EFFECTS: initialize and run the game
@@ -120,7 +119,6 @@ public class CSG {
 
         if (currentround <= totalround) {
             System.out.println("This is the " + currentround + " round of the game");
-            System.out.println("Current fund: $" + shop.getFunds());
             mainMenu();
         } else {
             System.out.println("Game over, you earned $" + shop.getFunds() + " Good job!");
@@ -133,6 +131,7 @@ public class CSG {
      * EFFECTS: display the menu
      */
     public void displayMenu() {
+        System.out.println("Current fund: $" + shop.getFunds());
         System.out.println("Input the following number for corresponding operations");
         System.out.println("1 : Show the cake inventory");
         System.out.println("2 : Show the material inventory");
@@ -220,15 +219,39 @@ public class CSG {
     /*
      * REQUIRES: input should be a number
      * MODIFIES: this
-     * EFFECTS: spend fund to buy material
+     * EFFECTS: chose the kind of material to buy.
      */
     public void buyMaterial(String kind) {
         System.out.println("Which kind of " + kind + " you want to buy?");
         for (int i = 1; i <= market.get(kind).size(); i++) {
             System.out.println("Input " + i + " for " + market.get(kind).get(i - 1).getName());
         }
-        Material goodToBuy = market.get(kind).get(input.nextInt() - 1);
+        int answer = input.nextInt() - 1;
+        Material goodToBuy = null;
+        if (answer <= market.get(kind).size() - 1) {
+            goodToBuy = market.get(kind).get(answer);
+        } else {
+            System.out.println("This is an Invalid input");
+            buyMaterial(kind);
+        }
 
+        choseAmountToBuy(goodToBuy);
+
+        System.out.println("Input 1 to keep shopping, input any other number to go back to main menu");
+        String decision = input.next().toLowerCase();
+        if (decision.equals("1")) {
+            shopping();
+        } else {
+            mainMenu();
+        }
+    }
+
+    /*
+     * REQUIRES: input should be a number
+     * MODIFIES: this
+     * EFFECTS: chose the amount to buy, and buy the material
+     */
+    public void choseAmountToBuy(Material goodToBuy) {
         System.out.println("How many " + goodToBuy.getName() + " do you want to buy?");
         int numberToBuy = input.nextInt();
         if (numberToBuy * goodToBuy.getPrice() > shop.getFunds()) {
@@ -238,13 +261,6 @@ public class CSG {
                 shop.buyMaterial(goodToBuy);
             }
             System.out.println("You have successfully purchased " + numberToBuy + " " + goodToBuy.getName());
-        }
-        System.out.println("Input 1 to keep shopping, input any other number to go back to main menu");
-        String decision = input.next().toLowerCase();
-        if (decision.equals("1")) {
-            shopping();
-        } else {
-            mainMenu();
         }
     }
 

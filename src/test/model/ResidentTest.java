@@ -23,16 +23,17 @@ public class ResidentTest {
     private Material topping1 = new Material("topping1",10,"topping",1);
     private Material topping2 = new Material("topping2",10,"topping",2);
     private Material topping3 = new Material("topping3",10,"topping",1);
+
     private List<Material> bases = Arrays.asList(base1,base2,base3);
     private List<Material> creams = Arrays.asList(cream1,cream2,cream3);
     private List<Material> toppings = Arrays.asList(topping1,topping2,topping3);
+
     private Cake cake1 = new Cake(base1,cream1,topping1);
     private Cake cake2 = new Cake(base2,cream2,topping2);
     private Cake cake3 = new Cake(base3,cream3,topping3);
 
     private Map<String, List<Material>> market = new LinkedHashMap<>();
     private Collection<Cake> cakeInventory = new ArrayList<>();
-
 
     @BeforeEach
     void runBefore() {
@@ -44,7 +45,6 @@ public class ResidentTest {
 
     @Test
     void testConstructor() {
-        assertEquals(testResident.getFavoriteCake(),null);
         assertTrue(testResident.getPurchasePower() <= 60);
         assertTrue(testResident.getPurchasePower() >= 30);
         for (String favor:testResident.getFavors().keySet()) {
