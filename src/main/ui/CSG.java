@@ -47,18 +47,34 @@ public class CSG {
         newGame();
     }
 
+    /*
+     * MODIFIES:this
+     * EFFECTS: set this shop with the given shop
+     */
     public void setShop(CakeShop shop) {
         this.shop = shop;
     }
 
+    /*
+     * MODIFIES:this
+     * EFFECTS: set this Town with the given Town
+     */
     public void setTown(Town town) {
         this.town = town;
     }
 
+    /*
+     * MODIFIES:this
+     * EFFECTS: set the total round with given value
+     */
     public void setTotalRound(int totalRound) {
         this.totalRound = totalRound;
     }
 
+    /*
+     * MODIFIES:this
+     * EFFECTS: set current round with given value
+     */
     public void setCurrentRound(int currentRound) {
         this.currentRound = currentRound;
     }
@@ -148,9 +164,7 @@ public class CSG {
         instruction = instruction.toLowerCase();
         switch (instruction) {
             case "1":showCakeInventory();
-                break;
             case "2":showMaterialInventory(true);
-                break;
             case "3":shopping();
                 break;
             case "4":makeCakeMenu(true);
@@ -161,14 +175,11 @@ public class CSG {
                 routine();
             case "6": saveCSG();
                 mainMenu();
-                break;
             case "7": loadCSG();
                 mainMenu();
-            case "8":
-                System.out.println("Game over, welcome next time");
+            case "8": System.out.println("Game over, welcome next time");
                 System.exit(0);
-            default:
-                System.out.println("Not valid, please input from the instructions below");
+            default: System.out.println("Not valid, please input from the instructions below");
                 mainMenu();
         }
     }
@@ -409,8 +420,10 @@ public class CSG {
         }
     }
 
-    // MODIFIES: this
-    // EFFECTS: loads CSG from file
+    /*
+     * MODIFIES: this
+     * EFFECTS: load the CSG from file
+     */
     private void loadCSG() {
         try {
             CSG csg = jsonReader.read(this);
