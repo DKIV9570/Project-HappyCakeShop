@@ -6,8 +6,8 @@ import java.util.*;
  * Represents the town
  */
 public class Town {
-    private List<Resident> residents = new LinkedList<>();                                                   //residents of the town
-    private Map<String,List<Material>> market = new LinkedHashMap<>();                  //The market in the town
+    private List<Resident> residents = new LinkedList<>();                    //residents of the town
+    private Map<String,List<Material>> market = new LinkedHashMap<>();        //The market in the town
     private List<String> bases = Arrays.asList("Soft base","Hard base","Medium base");
     private List<String> creams = Arrays.asList("Pure cream","Chocolate cream","Blueberry cream");
     private List<String> toppings = Arrays.asList("Apple topping","Banana topping","Nuts topping");

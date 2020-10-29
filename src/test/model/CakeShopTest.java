@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.MaterialException;
 import model.CakeShop;
 import model.Material;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,7 +64,7 @@ public class CakeShopTest {
         testShop.buyMaterial(base3);
         testShop.buyMaterial(notAMaterial);
         assertEquals(testShop.getFunds(),990);
-        assertEquals(testShop.getBaseInventory().get(base3),0);
+        assertEquals(testShop.getBaseInventory().get("base3").getInventory(),0);
     }
 
     @Test
@@ -82,9 +83,9 @@ public class CakeShopTest {
         assertEquals(testShop.getFunds(),970);
         testShop.buyMaterial(base2);
         assertEquals(testShop.getFunds(),960);
-        assertEquals(testShop.getBaseInventory().get(base2),2);
-        assertEquals(testShop.getCreamInventory().get(cream1),1);
-        assertEquals(testShop.getToppingInventory().get(topping1),1);
+        assertEquals(testShop.getBaseInventory().get("base2").getInventory(),2);
+        assertEquals(testShop.getCreamInventory().get("cream1").getInventory(),1);
+        assertEquals(testShop.getToppingInventory().get("topping1").getInventory(),1);
     }
 
     @Test
@@ -98,12 +99,18 @@ public class CakeShopTest {
             testShop.buyMaterial(cream2);
             testShop.buyMaterial(topping2);
         }
+
         testShop.makeCake(base1,cream1,topping1,10,1);
+
+
+
         testShop.makeCake(base1,cream1,topping1,10,1);
+
         String name1 = " \" base1/cream1/topping1 cake \" ";
         assertEquals(testShop.getCakeInventory().size(),1);
 
         testShop.makeCake(base2,cream2,topping2,10,2);
+
         assertEquals(testShop.getCakeInventory().size(),2);
 
     }
@@ -116,7 +123,8 @@ public class CakeShopTest {
         testShop.buyMaterial(base1);
         testShop.buyMaterial(cream1);
         testShop.buyMaterial(topping1);
-        testShop.makeCake(base1,cream1,topping1,10000,1);
+
+        testShop.makeCake(base1, cream1, topping1, 10000, 1);
         testShop.sellCake(town);
         assertEquals(testShop.getCakeInventory().size(),1);
     }

@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.MaterialException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +14,7 @@ public class Material {
     private int price;          //price of the material
     private String kind;        //kind of the material, which is one of "cake base" "cream" "topping"
     private int serialNumber;   //serial number of a material, unique, for quick inference
-    private int inventory;      //the inventory of material in the shop
+    private int inventory = 0;      //the inventory of material in the shop
 
     /*
      * EFFECTS: initialize the material with the given factors
@@ -45,16 +47,21 @@ public class Material {
     }
 
     /*
-     * EFFECTS: add the inventory by 1
+     * EFFECTS: add the inventory by number
      */
-    public void addInventory() {
-        inventory += 1;
+    public void addInventory(int number) {
+        inventory += number;
     }
 
     /*
-     * EFFECTS: consume the inventory by the number given
+     * EFFECTS: consume the inventory by the number given, if not enough, throw MaterialException
      */
-    public void consumeInventory(int number) {
-        inventory -= number;
+    public void consumeInventory(int number) throws MaterialException {
+        if (inventory >= number) {
+            inventory -= number;
+        } else {
+            throw new MaterialException();
+        }
+
     }
 }

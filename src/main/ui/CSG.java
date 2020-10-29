@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.MaterialException;
 import model.*;
 
 import java.util.*;
@@ -10,7 +11,6 @@ import java.util.*;
 public class CSG {
 
     private CakeShop shop;                                              //The cake shop
-    //private Map<String,List<Material>> market = new LinkedHashMap<>();  //The market
     private Town town = new Town();                                     //The town
     private int totalRound;                                             //total round of the game
     private int currentRound;                                           //current round of the game
@@ -49,7 +49,6 @@ public class CSG {
      * EFFECTS: initialize and run the game
      */
     protected void newGame() {
-        //initialize();
         showGuide();
         setRound();
 
@@ -287,7 +286,7 @@ public class CSG {
      */
     protected int setPrice(String cakeMade) {
         int price;
-        if (shop.getCakeInventory().containsKey(cakeMade)) {
+        if (shop.getCakeInventory().get(cakeMade).getPrice() != -1) {
             System.out.println("Do you want to reset the price? 1 for YES, 2 for No");
             String answer = input.next();
             if (answer.equals("1")) {
@@ -300,6 +299,7 @@ public class CSG {
             System.out.println("Please input an integer for the price of this kind of cake");
             price = input.nextInt();
         }
+        shop.getCakeInventory().get(cakeMade).setPrice(price);
         return price;
     }
 
@@ -307,7 +307,7 @@ public class CSG {
      * MODIFIES: this
      * EFFECTS: make cake and return true if any cake are made
      */
-    protected boolean makeCake() {
+    protected void makeCake() {
         List<Material> used = new ArrayList<>();
         used.add(select("cake base",shop.getBaseInventory()));
         used.add(select("cream",shop.getCreamInventory()));
@@ -315,18 +315,16 @@ public class CSG {
 
         System.out.println("How many this kind of cake you want to make?");
         int number = input.nextInt();
-        if (shop.getBaseInventory().get(used.get(0)).getInventory() >= number
-                && shop.getCreamInventory().get(used.get(1)).getInventory() >= number
-                && shop.getToppingInventory().get(used.get(2)).getInventory() >= number) {
-            Cake cakeMade = new Cake(used.get(0), used.get(1), used.get(2));
-            int price = setPrice(cakeMade.getName());
-            shop.makeCake(used.get(0), used.get(1), used.get(2), price, number);
-            System.out.println("You successfully made " + number + " " + cakeMade.getName()
-                    + " with price of " + price);
-            return true;
-        } else {
-            return false;
+        Cake cakeMade = new Cake(used.get(0), used.get(1), used.get(2));
+
+        int result = shop.makeCake(used.get(0), used.get(1), used.get(2), -1, number);
+        if (result != 0) {
+            System.out.println("You do not have enough material");
+            makeCakeMenu(false);
         }
+        int price = setPrice(cakeMade.getName());
+
+        System.out.println("You successfully made " + number + " " + cakeMade.getName() + " with price of " + price);
     }
 
     /*
@@ -338,18 +336,14 @@ public class CSG {
             System.out.println("Below is the materials you have");
             showMaterialInventory(false);
         }
-        boolean success = makeCake();
-        if (success) {
-            System.out.println("input 1 to keep making cake, other number to go back to main menu");
-            int instruction = input.nextInt();
-            if (instruction == 1) {
-                makeCakeMenu(false);
-            } else {
-                mainMenu();
-            }
-        } else {
-            System.out.println("Sorry, you don't have enough material");
+        makeCake();
+
+        System.out.println("input 1 to keep making cake, other to go back to main menu");
+        String instruction = input.next();
+        if (instruction.equals("1")) {
             makeCakeMenu(false);
+        } else {
+            mainMenu();
         }
     }
 }

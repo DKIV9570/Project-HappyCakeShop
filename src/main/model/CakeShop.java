@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.MaterialException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -72,13 +73,13 @@ public class CakeShop {
             funds -= material.getPrice();
             switch (material.getKind()) {
                 case "cake base":
-                    baseInventory.get(material.getName()).addInventory();
+                    baseInventory.get(material.getName()).addInventory(1);
                     break;
                 case "cream":
-                    creamInventory.get(material.getName()).addInventory();
+                    creamInventory.get(material.getName()).addInventory(1);
                     break;
                 case "topping":
-                    toppingInventory.get(material.getName()).addInventory();
+                    toppingInventory.get(material.getName()).addInventory(1);
                     break;
                 default:
                     break;
@@ -91,11 +92,35 @@ public class CakeShop {
      * MODIFIES: this
      * EFFECTS: use the chosen raw materials to make a cake
      */
-    public void makeCake(Material base,Material cream,Material topping,int price,int number) {
-        baseInventory.get(base).consumeInventory(number);
-        creamInventory.get(base).consumeInventory(number);
-        toppingInventory.get(base).consumeInventory(number);
+    public int makeCake(Material base,Material cream,Material topping,int price,int number) {
 
+        try {
+            baseInventory.get(base.getName()).consumeInventory(number);
+        } catch (MaterialException e) {
+            return 1;
+        }
+        try {
+            creamInventory.get(cream.getName()).consumeInventory(number);
+        } catch (MaterialException e) {
+            baseInventory.get(base.getName()).addInventory(number);
+            return 2;
+        }
+        try {
+            toppingInventory.get(topping.getName()).consumeInventory(number);
+        } catch (MaterialException e) {
+            baseInventory.get(base.getName()).addInventory(number);
+            creamInventory.get(base.getName()).addInventory(number);
+            return 3;
+        }
+        return nameCake(base,cream,topping,price,number);
+    }
+
+    /*
+     * REQUIRES:
+     * MODIFIES: this
+     * EFFECTS: name the cake
+     */
+    public int nameCake(Material base,Material cream,Material topping,int price,int number) {
         String name = " \" " + base.getName() + "/" + cream.getName() + "/" + topping.getName() + " cake \" ";
         if (!cakeInventory.containsKey(name)) {
             Cake newCake = new Cake(base,cream,topping);
@@ -103,6 +128,7 @@ public class CakeShop {
         }
         cakeInventory.get(name).setPrice(price);
         cakeInventory.get(name).addInventory(number);
+        return 0;
     }
 
     /*
