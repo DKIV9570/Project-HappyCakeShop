@@ -1,6 +1,8 @@
 package model;
 
 import exceptions.MaterialException;
+import org.json.JSONObject;
+import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +11,7 @@ import java.util.List;
 /*
  * Represents a kind of material
  */
-public class Material {
+public class Material implements Writable {
     private String name;        //name of the material
     private int price;          //price of the material
     private String kind;        //kind of the material, which is one of "cake base" "cream" "topping"
@@ -62,6 +64,20 @@ public class Material {
         } else {
             throw new MaterialException();
         }
+    }
 
+    public void setInventory(int inventory) {
+        this.inventory = inventory;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonMaterial = new JSONObject();
+        jsonMaterial.put("name",name);
+        jsonMaterial.put("price",price);
+        jsonMaterial.put("kind",kind);
+        jsonMaterial.put("serialNumber",serialNumber);
+        jsonMaterial.put("inventory",inventory);
+        return jsonMaterial;
     }
 }

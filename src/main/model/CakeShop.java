@@ -13,7 +13,7 @@ import java.util.Map;
 /*
  * Represents a cake shop.
  */
-public class CakeShop {
+public class CakeShop implements Writable {
     private int funds;                                              // The fund of the shop
     private Map<String,Material> baseInventory;
     private Map<String,Material> creamInventory;
@@ -41,6 +41,18 @@ public class CakeShop {
         for (Material material :materials.get("topping")) {
             toppingInventory.put(material.getName(),material); //stub
         }
+    }
+
+    /*
+     * EFFECTS:  read the values and use them to initialize
+     */
+    public CakeShop(int funds,Map<String,Material> baseInventory,Map<String,Material> creamInventory,
+                    Map<String,Material> toppingInventory,Map<String,Cake> cakeInventory) {
+        this.funds = funds;
+        this.baseInventory = baseInventory;
+        this.creamInventory = creamInventory;
+        this.toppingInventory = toppingInventory;
+        this.cakeInventory = cakeInventory;
     }
 
     public int getFunds() {
@@ -147,5 +159,31 @@ public class CakeShop {
     }
 
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonShop = new JSONObject();
+        jsonShop.put("funds",funds);
+        jsonShop.put("baseInventory",inventoryToJson(baseInventory));
+        jsonShop.put("creamInventory",inventoryToJson(creamInventory));
+        jsonShop.put("toppingInventory",inventoryToJson(toppingInventory));
+        jsonShop.put("cakeInventory",cakeInventoryToJson(cakeInventory));
+        return jsonShop;
+    }
+
+    public JSONArray inventoryToJson(Map<String, Material> inventory) {
+        JSONArray jsonArray = new JSONArray();
+        for (String key: inventory.keySet()) {
+            jsonArray.put(inventory.get(key).toJson());
+        }
+        return jsonArray;
+    }
+
+    public JSONArray cakeInventoryToJson(Map<String, Cake> inventory) {
+        JSONArray jsonArray = new JSONArray();
+        for (String key: inventory.keySet()) {
+            jsonArray.put(inventory.get(key).toJson());
+        }
+        return jsonArray;
+    }
 
 }

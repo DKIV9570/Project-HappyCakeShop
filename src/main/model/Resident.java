@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.lang.reflect.Array;
 import java.nio.channels.CancelledKeyException;
 import java.util.*;
@@ -8,7 +11,7 @@ import java.util.*;
  * Represents a resident in the town.
  * Note: resident is a Underlying data which not intended to be accessed by players.
  */
-public class Resident {
+public class Resident implements Writable {
 
     private int purchasePower;
     private Map<String,Float> favors = new LinkedHashMap<>();
@@ -28,6 +31,14 @@ public class Resident {
             }
         }
         purchasePower = (int) (Math.random() * (sum / market.size()) + (sum / market.size()));
+    }
+
+    /*
+     * EFFECTS: read the purchase power and favors
+     */
+    public Resident(int purchasePower,Map<String,Float> favors) {
+        this.purchasePower = purchasePower;
+        this.favors = favors;
     }
 
     /*
@@ -65,5 +76,14 @@ public class Resident {
             }
         }
         return favoriteCake;
+    }
+
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonResident = new JSONObject();
+        jsonResident.put("purchasePower",purchasePower);
+        jsonResident.put("favors",new JSONObject(favors));
+        return jsonResident;
     }
 }

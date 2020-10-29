@@ -2,7 +2,11 @@ package ui;
 
 import exceptions.MaterialException;
 import model.*;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -14,15 +18,49 @@ public class CSG {
     private Town town = new Town();                                     //The town
     private int totalRound;                                             //total round of the game
     private int currentRound;                                           //current round of the game
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+    private static final String JSON_STORE = "./data/CSG.json";
 
     private Scanner input = new Scanner(System.in);                     //The input of player
 
+    public CakeShop getShop() {
+        return shop;
+    }
+
+    public Town getTown() {
+        return town;
+    }
+
+    public int getTotalRound() {
+        return totalRound;
+    }
+
+    public int getCurrentRound() {
+        return currentRound;
+    }
 
     /*
      * EFFECTS: run new game
      */
     public CSG() {
         newGame();
+    }
+
+    public void setShop(CakeShop shop) {
+        this.shop = shop;
+    }
+
+    public void setTown(Town town) {
+        this.town = town;
+    }
+
+    public void setTotalRound(int totalRound) {
+        this.totalRound = totalRound;
+    }
+
+    public void setCurrentRound(int currentRound) {
+        this.currentRound = currentRound;
     }
 
     /*
@@ -52,6 +90,8 @@ public class CSG {
         showGuide();
         setRound();
 
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE,this);
         //The initial fund of the shop
         int initialFund = 1000;
         //initialize the cake shop
@@ -93,7 +133,9 @@ public class CSG {
         System.out.println("3 : Buy material from market");
         System.out.println("4 : Make cakes and set price");
         System.out.println("5 : Next round (This will automatically sell all of your cakes in inventory)");
-        System.out.println("6 : End game (this will make the game over)");
+        System.out.println("6 : save current game progress");
+        System.out.println("7 : load a game progress");
+        System.out.println("8 : End game (this will make the game over)");
     }
 
     /*
@@ -117,7 +159,12 @@ public class CSG {
                 shop.sellCake(town.getResidents());
                 currentRound += 1;
                 routine();
-            case "6":
+            case "6": saveCSG();
+                mainMenu();
+                break;
+            case "7": loadCSG();
+                mainMenu();
+            case "8":
                 System.out.println("Game over, welcome next time");
                 System.exit(0);
             default:
@@ -344,6 +391,36 @@ public class CSG {
             makeCakeMenu(false);
         } else {
             mainMenu();
+        }
+    }
+
+    /*
+     * MODIFIES: this
+     * EFFECTS: saves the CSG to file
+     */
+    private void saveCSG() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(this);
+            jsonWriter.close();
+            System.out.println("Saved this game" + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads CSG from file
+    private void loadCSG() {
+        try {
+            CSG csg = jsonReader.read(this);
+            this.setShop(csg.getShop());
+            this.setTown(csg.getTown());
+            this.setCurrentRound(csg.getCurrentRound());
+            this.setTotalRound(csg.getTotalRound());
+            System.out.println("Loaded the game" + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 }

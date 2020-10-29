@@ -1,16 +1,20 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 /*
  * Represents a cake.
  */
-public class Cake {
+public class Cake implements Writable {
 
+    private String name;
     private Material cakeBase;
     private Material cream;
     private Material topping;
     private int price;
     private int inventory;
-    private String name;
+
 
     /*
      * EFFECTS: Make a cake use the given materials and set price to 0. Initialize the name
@@ -75,5 +79,22 @@ public class Cake {
         if (inventory >= number) {
             inventory -= number;
         }
+    }
+
+    public void setInventory(int inventory) {
+        this.inventory = inventory;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonCake = new JSONObject();
+        jsonCake.put("name",name);
+        jsonCake.put("cakeBase",cakeBase.toJson());
+        jsonCake.put("cream",cream.toJson());
+        jsonCake.put("topping",topping.toJson());
+        jsonCake.put("price",price);
+        jsonCake.put("inventory",inventory);
+
+        return jsonCake;
     }
 }

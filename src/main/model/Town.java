@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.*;
 
 /*
  * Represents the town
  */
-public class Town {
+public class Town implements Writable {
     private List<Resident> residents = new LinkedList<>();                    //residents of the town
     private Map<String,List<Material>> market = new LinkedHashMap<>();        //The market in the town
     private List<String> bases = Arrays.asList("Soft base","Hard base","Medium base");
@@ -49,5 +53,41 @@ public class Town {
 
     public Map<String, List<Material>> getMarket() {
         return market;
+    }
+
+    public void setMarket(Map<String, List<Material>> market) {
+        this.market = market;
+    }
+
+    public void setResidents(List<Resident> residents) {
+        this.residents = residents;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonTown = new JSONObject();
+        jsonTown.put("residents",residentsToJson());
+        jsonTown.put("market",marketToJson());
+        return jsonTown;
+    }
+
+    public JSONObject marketToJson() {
+        JSONObject jsonMarket = new JSONObject();
+        for (String kind: market.keySet()) {
+            JSONArray jsonMaterials = new JSONArray();
+            for (Material m: market.get(kind)) {
+                jsonMaterials.put(m.toJson());
+            }
+            jsonMarket.put(kind,jsonMaterials);
+        }
+        return jsonMarket;
+    }
+
+    public JSONArray residentsToJson() {
+        JSONArray jsonResidents = new JSONArray();
+        for (Resident resident: residents) {
+            jsonResidents.put(resident.toJson());
+        }
+        return jsonResidents;
     }
 }
