@@ -1,9 +1,6 @@
 package ui;
 
-import model.Cake;
-import model.CakeShop;
-import model.Material;
-import model.Resident;
+import model.*;
 
 import java.util.*;
 
@@ -13,8 +10,8 @@ import java.util.*;
 public class CSG {
 
     private CakeShop shop;                                              //The cake shop
-    private Map<String,List<Material>> market = new LinkedHashMap<>();  //The market
-    private List<Resident> town = new ArrayList<>();                    //The town
+    //private Map<String,List<Material>> market = new LinkedHashMap<>();  //The market
+    private Town town = new Town();                                     //The town
     private int totalRound;                                             //total round of the game
     private int currentRound;                                           //current round of the game
 
@@ -26,43 +23,6 @@ public class CSG {
      */
     public CSG() {
         newGame();
-    }
-
-    /*
-     * EFFECTS: add a kind of material to the market
-     */
-    protected void initializeMarket(List<String> kind, String name) {
-        List<Material> listOfKind = new ArrayList<>();
-        for (int i = 0; i < kind.size(); i++) {
-            int price = (int) ((Math.random() * 19) + 1);
-            Material material = new Material(kind.get(i),price,name,i + 1);
-            listOfKind.add(material);
-        }
-        market.put(name,listOfKind);
-    }
-
-    /*
-     * MODIFIES:this
-     * EFFECTS: initialize the environment of the game
-     */
-    protected void initialize() {
-        List<String> bases = Arrays.asList("Soft base","Hard base","Medium base");
-        List<String> creams = Arrays.asList("Pure cream","Chocolate cream","Blueberry cream");
-        List<String> toppings = Arrays.asList("Apple topping","Banana topping","Nuts topping");
-
-        //initialize the market
-        initializeMarket(bases,"cake base");
-        initializeMarket(creams,"cream");
-        initializeMarket(toppings,"topping");
-
-        //initialize the residents of the town
-        //The population of the town
-        int population = 500;
-        for (int i = 1; i <= population; i++) {
-            Resident resident = new Resident(market);
-            town.add(resident);
-        }
-        currentRound = 1;
     }
 
     /*
@@ -89,15 +49,16 @@ public class CSG {
      * EFFECTS: initialize and run the game
      */
     protected void newGame() {
-        initialize();
+        //initialize();
         showGuide();
         setRound();
 
         //The initial fund of the shop
         int initialFund = 1000;
         //initialize the cake shop
-        this.shop = new CakeShop(initialFund,market);
+        this.shop = new CakeShop(initialFund,town.getMarket());
 
+        currentRound = 1;
         //Game begin
         routine();
     }
@@ -154,7 +115,7 @@ public class CSG {
             case "4":makeCakeMenu(true);
                 break;
             case "5":
-                shop.sellCake(town);
+                shop.sellCake(town.getResidents());
                 currentRound += 1;
                 routine();
             case "6":
@@ -218,13 +179,13 @@ public class CSG {
      */
     protected void buyMaterial(String kind) {
         System.out.println("Which kind of " + kind + " you want to buy?");
-        for (int i = 1; i <= market.get(kind).size(); i++) {
-            System.out.println("Input " + i + " for " + market.get(kind).get(i - 1).getName());
+        for (int i = 1; i <= town.getMarket().get(kind).size(); i++) {
+            System.out.println("Input " + i + " for " + town.getMarket().get(kind).get(i - 1).getName());
         }
         int answer = input.nextInt() - 1;
         Material goodToBuy = null;
-        if (answer <= market.get(kind).size() - 1) {
-            goodToBuy = market.get(kind).get(answer);
+        if (answer <= town.getMarket().get(kind).size() - 1) {
+            goodToBuy = town.getMarket().get(kind).get(answer);
         } else {
             System.out.println("This is an Invalid input");
             buyMaterial(kind);
@@ -264,9 +225,9 @@ public class CSG {
      */
     protected void displayMarket() {
         System.out.println("Welcome to the market, below are the goods available and their price");
-        for (String kind : market.keySet()) {
+        for (String kind : town.getMarket().keySet()) {
             System.out.println(kind + ":");
-            for (Material material : market.get(kind)) {
+            for (Material material : town.getMarket().get(kind)) {
                 System.out.println(material.getKind() + material.getSerialNumber() + "\t"
                         + material.getName() + ": $" + material.getPrice());
             }
