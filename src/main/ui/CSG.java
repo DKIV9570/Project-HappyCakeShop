@@ -11,17 +11,14 @@ import java.util.*;
  * Represents a cake shop game.
  */
 public class CSG {
-    private List<String> bases = new ArrayList<>();
-    private List<String> creams = new ArrayList<>();
-    private List<String> toppings = new ArrayList<>();
-    private Map<String,List<Material>> market = new LinkedHashMap<>();  //The materials
-    private int population = 500;                                      //The population of the town
-    private final int initialfund = 1000;                               //The initial fund of the shop
-    private Scanner input = new Scanner(System.in);                     //The input of player
-    private int totalround;                                             //total round of the game
-    private int currentround;                                           //current round of the game
+
     private CakeShop shop;                                              //The cake shop
+    private Map<String,List<Material>> market = new LinkedHashMap<>();  //The market
     private List<Resident> town = new ArrayList<>();                    //The town
+    private int totalRound;                                             //total round of the game
+    private int currentRound;                                           //current round of the game
+
+    private Scanner input = new Scanner(System.in);                     //The input of player
 
 
     /*
@@ -32,18 +29,9 @@ public class CSG {
     }
 
     /*
-     * EFFECTS: set the materials available in the game
-     */
-    public void setMaterial() {
-        bases = Arrays.asList("Soft base","Hard base","Medium base");
-        creams = Arrays.asList("Pure cream","Chocolate cream","Blueberry cream");
-        toppings = Arrays.asList("Apple topping","Banana topping","Nuts topping");
-    }
-
-    /*
      * EFFECTS: add a kind of material to the market
      */
-    public void initializeMarket(List<String> kind, String name) {
+    protected void initializeMarket(List<String> kind, String name) {
         List<Material> listOfKind = new ArrayList<>();
         for (int i = 0; i < kind.size(); i++) {
             int price = (int) ((Math.random() * 19) + 1);
@@ -57,25 +45,30 @@ public class CSG {
      * MODIFIES:this
      * EFFECTS: initialize the environment of the game
      */
-    public void initialize() {
-        setMaterial();
+    protected void initialize() {
+        List<String> bases = Arrays.asList("Soft base","Hard base","Medium base");
+        List<String> creams = Arrays.asList("Pure cream","Chocolate cream","Blueberry cream");
+        List<String> toppings = Arrays.asList("Apple topping","Banana topping","Nuts topping");
+
         //initialize the market
         initializeMarket(bases,"cake base");
         initializeMarket(creams,"cream");
         initializeMarket(toppings,"topping");
 
         //initialize the residents of the town
-        for (int i = 1;i <= population;i++) {
+        //The population of the town
+        int population = 500;
+        for (int i = 1; i <= population; i++) {
             Resident resident = new Resident(market);
             town.add(resident);
         }
-        currentround = 1;
+        currentRound = 1;
     }
 
     /*
      * EFFECTS: show the guide to the player
      */
-    public void showGuide() {
+    protected void showGuide() {
         System.out.println("Welcome to the Happy cake shop game");
         System.out.println("In this game, your can buy material from market, make cake and sell them");
         System.out.println("The goal of the game is to earn as much money as you can by the end of the game");
@@ -85,23 +78,25 @@ public class CSG {
      * MODIFIES: this
      * EFFECTS: ask the player to chose the total round of this game
      */
-    public void setRound() {
+    protected void setRound() {
         System.out.println("Now input the total round you prefer: you can input any integer you want");
         int roundInput = input.nextInt();
-        this.totalround = roundInput;
+        this.totalRound = roundInput;
     }
 
     /*
      * MODIFIES:this
      * EFFECTS: initialize and run the game
      */
-    public void newGame() {
+    protected void newGame() {
         initialize();
         showGuide();
         setRound();
 
+        //The initial fund of the shop
+        int initialFund = 1000;
         //initialize the cake shop
-        this.shop = new CakeShop(initialfund,market);
+        this.shop = new CakeShop(initialFund,market);
 
         //Game begin
         routine();
@@ -110,15 +105,15 @@ public class CSG {
     /*
      * EFFECTS: show the current round and open the main menu
      */
-    public void routine() {
+    protected void routine() {
         //print the Dividing line
         for (int i = 1; i <= 50; i++) {
             System.out.print("_");
         }
         System.out.println();
 
-        if (currentround <= totalround) {
-            System.out.println("This is the " + currentround + " round of the game");
+        if (currentRound <= totalRound) {
+            System.out.println("This is the " + currentRound + " round of the game");
             mainMenu();
         } else {
             System.out.println("Game over, you earned $" + shop.getFunds() + " Good job!");
@@ -130,7 +125,7 @@ public class CSG {
     /*
      * EFFECTS: display the menu
      */
-    public void displayMenu() {
+    protected void displayMenu() {
         System.out.println("Current fund: $" + shop.getFunds());
         System.out.println("Input the following number for corresponding operations");
         System.out.println("1 : Show the cake inventory");
@@ -145,7 +140,7 @@ public class CSG {
      * MODIFIES:this
      * EFFECTS:handle the instructions inputted
      */
-    public void mainMenu() {
+    protected void mainMenu() {
         displayMenu();
         String instruction = input.next();
         instruction = instruction.toLowerCase();
@@ -160,7 +155,7 @@ public class CSG {
                 break;
             case "5":
                 shop.sellCake(town);
-                currentround += 1;
+                currentRound += 1;
                 routine();
             case "6":
                 System.out.println("Game over, welcome next time");
@@ -174,7 +169,7 @@ public class CSG {
     /*
      * EFFECTS: display the cake inventory
      */
-    public void showCakeInventory() {
+    protected void showCakeInventory() {
         if (shop.getCakeInventory().isEmpty()) {
             System.out.println("Now we don't have any cake");
         } else {
@@ -193,7 +188,7 @@ public class CSG {
     /*
      * EFFECTS: display the material inventory
      */
-    public void showMaterialInventory(boolean call) {
+    protected void showMaterialInventory(boolean call) {
         System.out.println("Now we have :");
         System.out.println("cake base : ");
         for (Material material:shop.getBaseInventory().keySet()) {
@@ -221,7 +216,7 @@ public class CSG {
      * MODIFIES: this
      * EFFECTS: chose the kind of material to buy.
      */
-    public void buyMaterial(String kind) {
+    protected void buyMaterial(String kind) {
         System.out.println("Which kind of " + kind + " you want to buy?");
         for (int i = 1; i <= market.get(kind).size(); i++) {
             System.out.println("Input " + i + " for " + market.get(kind).get(i - 1).getName());
@@ -251,7 +246,7 @@ public class CSG {
      * MODIFIES: this
      * EFFECTS: chose the amount to buy, and buy the material
      */
-    public void choseAmountToBuy(Material goodToBuy) {
+    protected void choseAmountToBuy(Material goodToBuy) {
         System.out.println("How many " + goodToBuy.getName() + " do you want to buy?");
         int numberToBuy = input.nextInt();
         if (numberToBuy * goodToBuy.getPrice() > shop.getFunds()) {
@@ -267,7 +262,7 @@ public class CSG {
     /*
      * EFFECTS: display the market
      */
-    public void displayMarket() {
+    protected void displayMarket() {
         System.out.println("Welcome to the market, below are the goods available and their price");
         for (String kind : market.keySet()) {
             System.out.println(kind + ":");
@@ -289,7 +284,7 @@ public class CSG {
      * MODIFIES: this
      * EFFECTS: buy materials from market
      */
-    private void shopping() {
+    protected void shopping() {
         displayMarket();
         String instruction = input.next();
         switch (instruction) {
@@ -306,7 +301,7 @@ public class CSG {
     /*
      * EFFECTS: select the materials for making a cake and return it
      */
-    public Material select(String kind,Map<Material,Integer> materials) {
+    protected Material select(String kind,Map<Material,Integer> materials) {
         System.out.println("Please select the " + kind);
         System.out.println("SerialNumber" + " / Name" + " / Inventory");
         List<Material> index = new ArrayList<>();
@@ -329,7 +324,7 @@ public class CSG {
     /*
      * EFFECTS: set the price for a kind of cake
      */
-    public int setPrice(String cakeMade) {
+    protected int setPrice(String cakeMade) {
         int price;
         if (shop.getCakeInventory().containsKey(cakeMade)) {
             System.out.println("Do you want to reset the price? 1 for YES, 2 for No");
@@ -351,7 +346,7 @@ public class CSG {
      * MODIFIES: this
      * EFFECTS: make cake and return true if any cake are made
      */
-    public boolean makeCake() {
+    protected boolean makeCake() {
         List<Material> used = new ArrayList<>();
         used.add(select("cake base",shop.getBaseInventory()));
         used.add(select("cream",shop.getCreamInventory()));
@@ -377,7 +372,7 @@ public class CSG {
      * MODIFIES: this
      * EFFECTS: use the chosen material to make the given number of cakes and set price for them
      */
-    public void makeCakeMenu(boolean first) {
+    protected void makeCakeMenu(boolean first) {
         if (first) {
             System.out.println("Below is the materials you have");
             showMaterialInventory(false);
