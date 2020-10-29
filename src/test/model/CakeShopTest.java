@@ -45,14 +45,14 @@ public class CakeShopTest {
 
     @Test
     void testConstructor() {
-        for (Material material: testShop.getBaseInventory().keySet()) {
-            assertEquals(testShop.getBaseInventory().get(material),0);
+        for (String name: testShop.getBaseInventory().keySet()) {
+            assertEquals(testShop.getBaseInventory().get(name).getInventory(),0);
         }
-        for (Material material: testShop.getCreamInventory().keySet()) {
-            assertEquals(testShop.getCreamInventory().get(material),0);
+        for (String name: testShop.getCreamInventory().keySet()) {
+            assertEquals(testShop.getCreamInventory().get(name).getInventory(),0);
         }
-        for (Material material: testShop.getToppingInventory().keySet()) {
-            assertEquals(testShop.getToppingInventory().get(material),0);
+        for (String name: testShop.getToppingInventory().keySet()) {
+            assertEquals(testShop.getToppingInventory().get(name).getInventory(),0);
         }
         assertTrue(testShop.getCakeInventory().isEmpty());
         assertEquals(testShop.getFunds(),1000);

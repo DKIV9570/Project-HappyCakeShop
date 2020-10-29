@@ -191,19 +191,19 @@ public class CSG {
     protected void showMaterialInventory(boolean call) {
         System.out.println("Now we have :");
         System.out.println("cake base : ");
-        for (Material material:shop.getBaseInventory().keySet()) {
-            int amount = shop.getBaseInventory().get(material);
-            System.out.println(material.getName() + " : " + amount);
+        for (String name:shop.getBaseInventory().keySet()) {
+            int amount = shop.getBaseInventory().get(name).getInventory();
+            System.out.println(name + " : " + amount);
         }
         System.out.println("cream : ");
-        for (Material material:shop.getCreamInventory().keySet()) {
-            int amount = shop.getCreamInventory().get(material);
-            System.out.println(material.getName() + " : " + amount);
+        for (String name:shop.getCreamInventory().keySet()) {
+            int amount = shop.getCreamInventory().get(name).getInventory();
+            System.out.println(name + " : " + amount);
         }
         System.out.println("topping : ");
-        for (Material material:shop.getToppingInventory().keySet()) {
-            int amount = shop.getToppingInventory().get(material);
-            System.out.println(material.getName() + " : " + amount);
+        for (String name:shop.getToppingInventory().keySet()) {
+            int amount = shop.getToppingInventory().get(name).getInventory();
+            System.out.println(name + " : " + amount);
         }
         System.out.println();
         if (call) {
@@ -301,14 +301,14 @@ public class CSG {
     /*
      * EFFECTS: select the materials for making a cake and return it
      */
-    protected Material select(String kind,Map<Material,Integer> materials) {
+    protected Material select(String kind,Map<String,Material> materials) {
         System.out.println("Please select the " + kind);
         System.out.println("SerialNumber" + " / Name" + " / Inventory");
         List<Material> index = new ArrayList<>();
-        for (Material material: materials.keySet()) {
-            System.out.println(material.getSerialNumber()  + " / "
-                    + material.getName() + " / " + materials.get(material));
-            index.add(material);
+        for (String name: materials.keySet()) {
+            System.out.println(materials.get(name).getSerialNumber()  + " / "
+                    + name + " / " + materials.get(name).getInventory());
+            index.add(materials.get(name));
         }
         System.out.println("Input the Serial Number for corresponding " + kind
                 + ", input other number to return to main menu");
@@ -354,9 +354,9 @@ public class CSG {
 
         System.out.println("How many this kind of cake you want to make?");
         int number = input.nextInt();
-        if (shop.getBaseInventory().get(used.get(0)) >= number
-                && shop.getCreamInventory().get(used.get(1)) >= number
-                && shop.getToppingInventory().get(used.get(2)) >= number) {
+        if (shop.getBaseInventory().get(used.get(0)).getInventory() >= number
+                && shop.getCreamInventory().get(used.get(1)).getInventory() >= number
+                && shop.getToppingInventory().get(used.get(2)).getInventory() >= number) {
             Cake cakeMade = new Cake(used.get(0), used.get(1), used.get(2));
             int price = setPrice(cakeMade.getName());
             shop.makeCake(used.get(0), used.get(1), used.get(2), price, number);

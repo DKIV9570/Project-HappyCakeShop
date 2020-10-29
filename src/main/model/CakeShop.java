@@ -14,9 +14,9 @@ import java.util.Map;
  */
 public class CakeShop {
     private int funds;                                              // The fund of the shop
-    private Map<Material,Integer> baseInventory;
-    private Map<Material,Integer> creamInventory;
-    private Map<Material,Integer> toppingInventory;
+    private Map<String,Material> baseInventory;
+    private Map<String,Material> creamInventory;
+    private Map<String,Material> toppingInventory;
     private Map<String,Cake> cakeInventory;                        // The cake inventory of the shop
 
     /*
@@ -32,13 +32,13 @@ public class CakeShop {
         cakeInventory = new LinkedHashMap();
 
         for (Material material :materials.get("cake base")) {
-            baseInventory.put(material,0); //stub
+            baseInventory.put(material.getName(),material); //stub
         }
         for (Material material :materials.get("cream")) {
-            creamInventory.put(material,0);
+            creamInventory.put(material.getName(),material); //stub
         }
         for (Material material :materials.get("topping")) {
-            toppingInventory.put(material,0);
+            toppingInventory.put(material.getName(),material); //stub
         }
     }
 
@@ -50,15 +50,15 @@ public class CakeShop {
         return cakeInventory;
     }
 
-    public Map<Material, Integer> getBaseInventory() {
+    public Map<String, Material> getBaseInventory() {
         return baseInventory;
     }
 
-    public Map<Material, Integer> getCreamInventory() {
+    public Map<String, Material> getCreamInventory() {
         return creamInventory;
     }
 
-    public Map<Material, Integer> getToppingInventory() {
+    public Map<String, Material> getToppingInventory() {
         return toppingInventory;
     }
 
@@ -71,11 +71,14 @@ public class CakeShop {
         if (funds >= material.getPrice()) {
             funds -= material.getPrice();
             switch (material.getKind()) {
-                case "cake base": baseInventory.put(material,baseInventory.get(material) + 1);
+                case "cake base":
+                    baseInventory.get(material.getName()).addInventory();
                     break;
-                case "cream": creamInventory.put(material,creamInventory.get(material) + 1);
+                case "cream":
+                    creamInventory.get(material.getName()).addInventory();
                     break;
-                case "topping": toppingInventory.put(material,toppingInventory.get(material) + 1);
+                case "topping":
+                    toppingInventory.get(material.getName()).addInventory();
                     break;
                 default:
                     break;
@@ -89,9 +92,9 @@ public class CakeShop {
      * EFFECTS: use the chosen raw materials to make a cake
      */
     public void makeCake(Material base,Material cream,Material topping,int price,int number) {
-        baseInventory.put(base,baseInventory.get(base) - number);
-        creamInventory.put(cream,creamInventory.get(cream) - number);
-        toppingInventory.put(topping,toppingInventory.get(topping) - number);
+        baseInventory.get(base).consumeInventory(number);
+        creamInventory.get(base).consumeInventory(number);
+        toppingInventory.get(base).consumeInventory(number);
 
         String name = " \" " + base.getName() + "/" + cream.getName() + "/" + topping.getName() + " cake \" ";
         if (!cakeInventory.containsKey(name)) {

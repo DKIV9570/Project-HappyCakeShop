@@ -12,6 +12,7 @@ public class Material {
     private int price;          //price of the material
     private String kind;        //kind of the material, which is one of "cake base" "cream" "topping"
     private int serialNumber;   //serial number of a material, unique, for quick inference
+    private int inventory;      //the inventory of material in the shop
 
     /*
      * EFFECTS: initialize the material with the given factors
@@ -37,5 +38,23 @@ public class Material {
 
     public int getSerialNumber() {
         return serialNumber;
+    }
+
+    public int getInventory() {
+        return inventory;
+    }
+
+    /*
+     * EFFECTS: add the inventory by 1
+     */
+    public void addInventory() {
+        inventory += 1;
+    }
+
+    /*
+     * EFFECTS: consume the inventory by the number given
+     */
+    public void consumeInventory(int number) {
+        inventory -= number;
     }
 }
