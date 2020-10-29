@@ -24,4 +24,5 @@ and use them to make cakes, set the price for the cakes, and add them to cake in
 - As a user, I want to be able to sell the cakes and earn funds
 - As a user, I want to be able to view the cake inventory
 - As a user, I want to be able to view the material inventory
-
+- As a user, I want to be able to save my game progress to file
+- As a user, I want to be able to be able to load my game progress to file
