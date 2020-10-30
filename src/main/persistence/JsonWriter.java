@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 
 // Represents a writer that writes JSON representation of CSG to file
 public class JsonWriter {
-    private static final int TAB = 4;
+    private static final int TAB = 5;
     private PrintWriter writer;
     private String destination;
 

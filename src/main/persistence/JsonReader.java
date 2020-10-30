@@ -19,7 +19,7 @@ public class JsonReader {
     private String source;
 
     // EFFECTS: constructs reader to read from source file
-    public JsonReader(String source,CSG csg) {
+    public JsonReader(String source) {
         this.source = source;
     }
 
@@ -50,7 +50,7 @@ public class JsonReader {
     }
 
     // MODIFIES: CSG
-    // EFFECTS: parses the environment from JSON object and imply them to CSG
+    // EFFECTS: parses the environment variables from JSON object and imply them to CSG
     private void getEnvironment(CSG csg, JSONObject jsonObject) {
         JSONObject jsonShop = jsonObject.getJSONObject("shop");
         JSONObject jsonTown = jsonObject.getJSONObject("town");
@@ -105,6 +105,7 @@ public class JsonReader {
         residents.add(resident);
     }
 
+    // EFFECTS: parses a material from JSON object and returns it
     public Material getMaterial(Object json) {
         JSONObject jsonMaterial = (JSONObject) json;
         String name = jsonMaterial.getString("name");
@@ -117,8 +118,6 @@ public class JsonReader {
         material.setInventory(inventory);
         return material;
     }
-
-
 
     // EFFECTS: parses the shop from JSON object and return it
     private CakeShop getShop(JSONObject jsonObject) {
@@ -142,6 +141,8 @@ public class JsonReader {
         return cakeshop;
     }
 
+    // MODIFIES: map
+    // EFFECTS: parses materials from JSON object and adds it to map
     public void getMaterials(JSONArray jsonArray,Map<String,Material> map) {
         for (Object json : jsonArray) {
             Material material = getMaterial(json);
@@ -149,6 +150,8 @@ public class JsonReader {
         }
     }
 
+    // MODIFIES: map
+    // EFFECTS: parses cakes from JSON object and adds it to map
     public void getCakes(JSONArray jsonArray,Map<String,Cake> map) {
         for (Object json : jsonArray) {
             Cake cake = getCake(json);
@@ -156,6 +159,7 @@ public class JsonReader {
         }
     }
 
+    // EFFECTS: parses a cake from JSON object and return it
     public Cake getCake(Object json) {
         JSONObject jsonCake = (JSONObject) json;
         String name = jsonCake.getString("name");

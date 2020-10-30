@@ -44,7 +44,19 @@ public class CSG {
      * EFFECTS: run new game
      */
     public CSG() {
-        newGame();
+        showGuide();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        System.out.println();
+        System.out.println("You want to start a new game or resume from last save?");
+        System.out.println("input 1 to resume, any other key for new game");
+        String chose = input.next();
+        if (chose.equals("1")) {
+            loadCSG();
+            mainMenu();
+        } else {
+            newGame();
+        }
     }
 
     /*
@@ -100,14 +112,11 @@ public class CSG {
 
     /*
      * MODIFIES:this
-     * EFFECTS: initialize and run the game
+     * EFFECTS: start a new game
      */
     protected void newGame() {
-        showGuide();
         setRound();
 
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE,this);
         //The initial fund of the shop
         int initialFund = 1000;
         //initialize the cake shop
@@ -151,7 +160,7 @@ public class CSG {
         System.out.println("5 : Next round (This will automatically sell all of your cakes in inventory)");
         System.out.println("6 : save current game progress");
         System.out.println("7 : load a game progress");
-        System.out.println("8 : End game (this will make the game over)");
+        System.out.println("8 : End game (this will automatically save the game and exit)");
     }
 
     /*
@@ -160,8 +169,7 @@ public class CSG {
      */
     protected void mainMenu() {
         displayMenu();
-        String instruction = input.next();
-        instruction = instruction.toLowerCase();
+        String instruction = input.next().toLowerCase();
         switch (instruction) {
             case "1":showCakeInventory();
             case "2":showMaterialInventory(true);
@@ -177,7 +185,8 @@ public class CSG {
                 mainMenu();
             case "7": loadCSG();
                 mainMenu();
-            case "8": System.out.println("Game over, welcome next time");
+            case "8": saveCSG();
+                System.out.println("Game saved, see you then");
                 System.exit(0);
             default: System.out.println("Not valid, please input from the instructions below");
                 mainMenu();

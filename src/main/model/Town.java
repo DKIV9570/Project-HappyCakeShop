@@ -55,10 +55,18 @@ public class Town implements Writable {
         return market;
     }
 
+    /*
+     * MODIFIES: this
+     * EFFECTS: set the market with given one
+     */
     public void setMarket(Map<String, List<Material>> market) {
         this.market = market;
     }
 
+    /*
+     * MODIFIES: this
+     * EFFECTS: set the residents with given one
+     */
     public void setResidents(List<Resident> residents) {
         this.residents = residents;
     }
