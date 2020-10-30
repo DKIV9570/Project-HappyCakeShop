@@ -6,6 +6,7 @@ import model.Material;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JsonTest {
+
     protected void checkCake(String name, Material cakeBase,
                              Material cream,Material topping,int price, int inventory, Cake cake) {
         assertEquals(name, cake.getName());

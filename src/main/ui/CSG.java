@@ -104,9 +104,9 @@ public class CSG {
      * MODIFIES: this
      * EFFECTS: ask the player to chose the total round of this game
      */
-    protected void setRound() {
+    protected void setRound() throws InputMismatchException {
         System.out.println("Now input the total round you prefer: you can input any integer you want");
-        int roundInput = input.nextInt();
+        int roundInput = new Scanner(System.in).nextInt();
         this.totalRound = roundInput;
     }
 
@@ -115,7 +115,12 @@ public class CSG {
      * EFFECTS: start a new game
      */
     protected void newGame() {
-        setRound();
+        try {
+            setRound();
+        } catch (InputMismatchException e) {
+            System.out.println("this is not a valid input, please input a number");
+            newGame();
+        }
 
         //The initial fund of the shop
         int initialFund = 1000;
@@ -160,7 +165,7 @@ public class CSG {
         System.out.println("5 : Next round (This will automatically sell all of your cakes in inventory)");
         System.out.println("6 : save current game progress");
         System.out.println("7 : load a game progress");
-        System.out.println("8 : End game (this will automatically save the game and exit)");
+        System.out.println("8 : End game (this will exit from game)");
     }
 
     /*
@@ -185,12 +190,27 @@ public class CSG {
                 mainMenu();
             case "7": loadCSG();
                 mainMenu();
-            case "8": saveCSG();
-                System.out.println("Game saved, see you then");
-                System.exit(0);
+            case "8": exitGame();
             default: System.out.println("Not valid, please input from the instructions below");
                 mainMenu();
         }
+    }
+
+    /*
+     * MODIFIES: this
+     * EFFECTS: ask player if want to save, and then quit the game
+     */
+    protected void exitGame() {
+        System.out.println("do you want to save your current progress?");
+        System.out.println("1 for yes, rest key for no");
+        String answer = input.next();
+        if (answer.equals("1")) {
+            saveCSG();
+            System.out.println("Game saved, see you then ~");
+        } else {
+            System.out.println("Game over, see you next time!");
+        }
+        System.exit(0);
     }
 
     /*
@@ -416,7 +436,7 @@ public class CSG {
 
     /*
      * MODIFIES: this
-     * EFFECTS: saves the CSG to file
+     * EFFECTS: saves the CSG to file, and return to mainMenu
      */
     private void saveCSG() {
         try {
@@ -431,7 +451,7 @@ public class CSG {
 
     /*
      * MODIFIES: this
-     * EFFECTS: load the CSG from file
+     * EFFECTS: load the CSG from file, and return to mainMenu
      */
     private void loadCSG() {
         try {

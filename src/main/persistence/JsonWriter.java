@@ -7,7 +7,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-// Represents a writer that writes JSON representation of CSG to file
+/*
+This is a JsonWriter to write a CSG class to json and save it to file
+referenced some design idea in the CPSC210.JsonSerializationDemo project
+*/
 public class JsonWriter {
     private static final int TAB = 5;
     private PrintWriter writer;

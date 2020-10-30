@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+/*
+This is a JsonReader to read json from file and get CSG
+referenced some design idea in the CPSC210.JsonSerializationDemo project
+*/
 public class JsonReader {
     private String source;
 
