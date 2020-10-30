@@ -103,24 +103,24 @@ public class CakeShop implements Writable {
      * MODIFIES: this
      * EFFECTS: use the chosen raw materials to make a cake
      */
-    public int makeCake(Material base,Material cream,Material topping,int price,int number) {
+    public int makeCake(String base, String cream, String topping, int price, int number) {
 
         try {
-            baseInventory.get(base.getName()).consumeInventory(number);
+            baseInventory.get(base).consumeInventory(number);
         } catch (MaterialException e) {
             return 1;
         }
         try {
-            creamInventory.get(cream.getName()).consumeInventory(number);
+            creamInventory.get(cream).consumeInventory(number);
         } catch (MaterialException e) {
-            baseInventory.get(base.getName()).addInventory(number);
+            baseInventory.get(base).addInventory(number);
             return 2;
         }
         try {
-            toppingInventory.get(topping.getName()).consumeInventory(number);
+            toppingInventory.get(topping).consumeInventory(number);
         } catch (MaterialException e) {
-            baseInventory.get(base.getName()).addInventory(number);
-            creamInventory.get(base.getName()).addInventory(number);
+            baseInventory.get(base).addInventory(number);
+            creamInventory.get(base).addInventory(number);
             return 3;
         }
         return nameCake(base,cream,topping,price,number);
@@ -131,10 +131,10 @@ public class CakeShop implements Writable {
      * MODIFIES: this
      * EFFECTS: name the cake
      */
-    public int nameCake(Material base,Material cream,Material topping,int price,int number) {
-        String name = " \" " + base.getName() + "/" + cream.getName() + "/" + topping.getName() + " cake \" ";
+    public int nameCake(String base, String cream, String topping, int price, int number) {
+        String name = " \" " + base + "/" + cream + "/" + topping + " cake \" ";
         if (!cakeInventory.containsKey(name)) {
-            Cake newCake = new Cake(base,cream,topping);
+            Cake newCake = new Cake(baseInventory.get(base),creamInventory.get(cream),toppingInventory.get(topping));
             cakeInventory.put(name, newCake);
         }
         cakeInventory.get(name).setPrice(price);

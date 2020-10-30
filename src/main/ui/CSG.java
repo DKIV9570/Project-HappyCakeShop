@@ -418,7 +418,8 @@ public class CSG {
         int number = input.nextInt();
         Cake cakeMade = new Cake(used.get(0), used.get(1), used.get(2));
 
-        int result = shop.makeCake(used.get(0), used.get(1), used.get(2), -1, number);
+        int result = shop.makeCake(used.get(0).getName(),
+                used.get(1).getName(), used.get(2).getName(), -1, number);
         if (result != 0) {
             System.out.println("You do not have enough material");
             makeCakeMenu(false);

@@ -1,5 +1,7 @@
 package persistence;
 
+import model.Material;
+import model.Resident;
 import org.junit.jupiter.api.Test;
 import ui.CSG;
 
@@ -40,6 +42,18 @@ public class JsonReaderTest extends JsonTest {
             assertEquals(0, csg.getShop().getCakeInventory().size());
             assertEquals(500, csg.getTown().getResidents().size());
             assertEquals(3, csg.getTown().getMarket().size());
+
+            Material testMaterial = csg.getShop().getBaseInventory().get("Soft base");
+            checkMaterial("Soft base",testMaterial.getPrice(),
+                    "cake base",1,0,testMaterial);
+            checkMaterialInventory(3,csg.getShop().getBaseInventory());
+            checkMaterialInventory(3,csg.getShop().getCreamInventory());
+            checkMaterialInventory(3,csg.getShop().getToppingInventory());
+
+            Resident testResident = csg.getTown().getResidents().get(0);
+            checkResident(9,testResident);
+
+
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }

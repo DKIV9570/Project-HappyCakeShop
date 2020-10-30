@@ -110,16 +110,16 @@ public class CakeShopTest {
             testShop.buyMaterial(topping2);
         }
 
-        testShop.makeCake(base1,cream1,topping1,10,1);
+        testShop.makeCake(base1.getName(),cream1.getName(),topping1.getName(),10,1);
 
 
 
-        testShop.makeCake(base1,cream1,topping1,10,1);
+        testShop.makeCake(base1.getName(),cream1.getName(),topping1.getName(),10,1);
 
         String name1 = " \" base1/cream1/topping1 cake \" ";
         assertEquals(testShop.getCakeInventory().size(),1);
 
-        testShop.makeCake(base2,cream2,topping2,10,2);
+        testShop.makeCake(base2.getName(),cream2.getName(),topping2.getName(),10,2);
 
         assertEquals(testShop.getCakeInventory().size(),2);
 
@@ -134,7 +134,7 @@ public class CakeShopTest {
         testShop.buyMaterial(cream1);
         testShop.buyMaterial(topping1);
 
-        testShop.makeCake(base1, cream1, topping1, 10000, 1);
+        testShop.makeCake(base1.getName(), cream1.getName(), topping1.getName(), 10000, 1);
         testShop.sellCake(town);
         assertEquals(testShop.getCakeInventory().size(),1);
     }
@@ -146,7 +146,7 @@ public class CakeShopTest {
         testShop.buyMaterial(base1);
         testShop.buyMaterial(cream1);
         testShop.buyMaterial(topping1);
-        testShop.makeCake(base1,cream1,topping1,1,1);
+        testShop.makeCake(base1.getName(),cream1.getName(),topping1.getName(),1,1);
         String nameOfCake = " \" " + base1.getName() + "/" + cream1.getName() + "/" + topping1.getName() + " cake \" ";
         testShop.sellCake(town);
         assertEquals(testShop.getCakeInventory().get(nameOfCake).getInventory(),0);

@@ -69,11 +69,11 @@ public class ResidentTest {
 
     @Test
     void testPurchase1() {
-        cake1.setPrice(121);
+        cake1.setPrice(10);
         cake1.addInventory(0);
-        cake2.setPrice(121);
+        cake2.setPrice(150);
         cake2.addInventory(1);
-        cake3.setPrice(121);
+        cake3.setPrice(150);
         cake3.addInventory(1);
         cakeInventory.add(cake1);
         cakeInventory.add(cake2);
