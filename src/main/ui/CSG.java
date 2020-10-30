@@ -60,6 +60,20 @@ public class CSG {
     }
 
     /*
+     * EFFECTS: create an CSG class for test, without run the game;
+     */
+    public CSG(int totalRound) {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        //The initial fund of the shop
+        int initialFund = 1000;
+        //initialize the cake shop
+        this.shop = new CakeShop(initialFund,town.getMarket());
+        this.totalRound = totalRound;
+        currentRound = 1;
+    }
+
+    /*
      * MODIFIES:this
      * EFFECTS: set this shop with the given shop
      */

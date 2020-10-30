@@ -78,7 +78,6 @@ public class Resident implements Writable {
         return favoriteCake;
     }
 
-
     @Override
     public JSONObject toJson() {
         JSONObject jsonResident = new JSONObject();

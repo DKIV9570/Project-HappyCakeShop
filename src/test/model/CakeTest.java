@@ -53,4 +53,12 @@ public class CakeTest {
         testCake.consumeInventory(40);
         assertEquals(30, testCake.getInventory());
     }
+
+    @Test
+    void testSetInventory() {
+        testCake.setInventory(10);
+        assertEquals(testCake.getInventory(),10);
+        testCake.setInventory(20);
+        assertEquals(testCake.getInventory(),20);
+    }
 }

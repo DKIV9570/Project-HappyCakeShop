@@ -2,8 +2,12 @@ package persistence;
 
 import model.Cake;
 import model.Material;
+import model.Resident;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JsonTest {
 
@@ -25,4 +29,23 @@ public class JsonTest {
         assertEquals(price, material.getPrice());
         assertEquals(inventory, material.getInventory());
     }
+
+    protected void checkMaterialInventory(int size, Map<String, Material> materialInventory) {
+        assertEquals(size,materialInventory.size());
+    }
+
+    protected void checkCakeInventory(int size, Map<String, Cake> cakeInventory) {
+        assertEquals(size,cakeInventory.size());
+    }
+
+    protected void checkResident(int size, Resident resident) {
+        assertEquals(size,resident.getFavors().size());
+        assertTrue(resident.getPurchasePower() < 1000000);
+    }
+
+
+
+
+
+
 }

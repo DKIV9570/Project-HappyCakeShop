@@ -79,6 +79,9 @@ public class Town implements Writable {
         return jsonTown;
     }
 
+    /*
+     * EFFECTS: returns the market of the town as an JSONObject.
+     */
     public JSONObject marketToJson() {
         JSONObject jsonMarket = new JSONObject();
         for (String kind: market.keySet()) {
@@ -91,6 +94,9 @@ public class Town implements Writable {
         return jsonMarket;
     }
 
+    /*
+     * EFFECTS: returns the residents of the town as an JSONArray.
+     */
     public JSONArray residentsToJson() {
         JSONArray jsonResidents = new JSONArray();
         for (Resident resident: residents) {

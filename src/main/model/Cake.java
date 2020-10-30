@@ -15,7 +15,6 @@ public class Cake implements Writable {
     private int price;
     private int inventory;
 
-
     /*
      * EFFECTS: Make a cake use the given materials and set price to 0. Initialize the name
      */
@@ -81,6 +80,10 @@ public class Cake implements Writable {
         }
     }
 
+    /*
+     * MODIFIES: this
+     * EFFECTS: set the inventory with given one
+     */
     public void setInventory(int inventory) {
         this.inventory = inventory;
     }

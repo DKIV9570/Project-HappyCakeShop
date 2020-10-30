@@ -54,6 +54,20 @@ public class ResidentTest {
     }
 
     @Test
+    void testConstructor2() {
+        int purchasePower = testResident.getPurchasePower();
+        Map<String,Float> favors = testResident.getFavors();
+        Resident resident2 = new Resident(purchasePower,favors);
+
+        assertTrue(testResident.getPurchasePower() <= 60);
+        assertTrue(testResident.getPurchasePower() >= 30);
+        for (String favor:testResident.getFavors().keySet()) {
+            assertTrue(testResident.getFavors().get(favor) <= 1);
+            assertTrue(testResident.getFavors().get(favor) >= 0);
+        }
+    }
+
+    @Test
     void testPurchase1() {
         cake1.setPrice(121);
         cake1.addInventory(0);

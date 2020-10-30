@@ -39,4 +39,25 @@ public class TownTest {
         assertEquals(market.get("topping").size(),3);
     }
 
+    @Test
+    public void testSetMarket() {
+        Town anotherTown = new Town();
+        testTown.setMarket(anotherTown.getMarket());
+        Map<String, List<Material>> market = testTown.getMarket();
+        assertEquals(market.size(),3);
+        assertEquals(market.get("cake base").size(),3);
+        assertEquals(market.get("cream").size(),3);
+        assertEquals(market.get("topping").size(),3);
+    }
+
+    @Test
+    public void testSetResidents() {
+        float favorBeforeSet = testTown.getResidents().get(0).getFavors().get("Soft base");
+        Town anotherTown = new Town();
+        testTown.setResidents(anotherTown.getResidents());
+        assertEquals(500,testTown.getResidents().size());
+        float favorAfterSet = testTown.getResidents().get(0).getFavors().get("Soft base");
+        assertNotEquals(favorAfterSet,favorBeforeSet);
+    }
+
 }

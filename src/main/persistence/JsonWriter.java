@@ -16,20 +16,26 @@ public class JsonWriter {
     private PrintWriter writer;
     private String destination;
 
-    // EFFECTS: constructs writer to write to destination file
+    /*
+    EFFECTS: constructs writer to write to destination file
+    */
     public JsonWriter(String destination) {
         this.destination = destination;
     }
 
-    // MODIFIES: this
-    // EFFECTS: opens writer; throws FileNotFoundException if destination file cannot
-    // be opened for writing
+    /*
+     MODIFIES: this
+     EFFECTS: opens writer; throws FileNotFoundException if destination file cannot
+     be opened for writing
+     */
     public void open() throws FileNotFoundException {
         writer = new PrintWriter(new File(destination));
     }
 
-    // MODIFIES: this
-    // EFFECTS: writes JSON representation of CSG to file
+    /*
+     MODIFIES: this
+     EFFECTS: writes JSON representation of CSG to file
+     */
     public void write(CSG csg) {
         JSONObject jsonCSG = new JSONObject();
         JSONObject jsonTown = csg.getTown().toJson();
@@ -41,14 +47,18 @@ public class JsonWriter {
         saveToFile(jsonCSG.toString(TAB));
     }
 
-    // MODIFIES: this
-    // EFFECTS: closes writer
+    /*
+     MODIFIES: this
+     EFFECTS: closes writer
+     */
     public void close() {
         writer.close();
     }
 
-    // MODIFIES: this
-    // EFFECTS: writes string to file
+    /*
+     MODIFIES: this
+     EFFECTS: writes string to file
+     */
     private void saveToFile(String json) {
         writer.print(json);
     }

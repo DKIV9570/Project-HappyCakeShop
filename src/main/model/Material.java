@@ -66,6 +66,10 @@ public class Material implements Writable {
         }
     }
 
+    /*
+     * EFFECTS: set the inventory by the number given
+     *          only for testing
+     */
     public void setInventory(int inventory) {
         this.inventory = inventory;
     }

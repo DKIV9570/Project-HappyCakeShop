@@ -40,8 +40,6 @@ public class CakeShopTest {
         market.put("cream",creams);
         market.put("topping",toppings);
         testShop = new CakeShop(1000,market);
-
-
     }
 
     @Test
@@ -55,6 +53,18 @@ public class CakeShopTest {
         for (String name: testShop.getToppingInventory().keySet()) {
             assertEquals(testShop.getToppingInventory().get(name).getInventory(),0);
         }
+        assertTrue(testShop.getCakeInventory().isEmpty());
+        assertEquals(testShop.getFunds(),1000);
+    }
+
+    @Test
+    void testConstructor2() {
+        int funds = testShop.getFunds();
+        Map<String,Material> baseInventory = testShop.getBaseInventory();
+        Map<String,Material> creamInventory = testShop.getCreamInventory();
+        Map<String,Material> toppingInventory = testShop.getToppingInventory();
+        Map<String,Cake> cakeInventory = testShop.getCakeInventory();
+        CakeShop anotherShop = new CakeShop(funds,baseInventory,creamInventory,toppingInventory,cakeInventory);
         assertTrue(testShop.getCakeInventory().isEmpty());
         assertEquals(testShop.getFunds(),1000);
     }

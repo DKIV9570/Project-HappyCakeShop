@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,19 +157,21 @@ public class CakeShop implements Writable {
         }
     }
 
-
     @Override
     public JSONObject toJson() {
         JSONObject jsonShop = new JSONObject();
         jsonShop.put("funds",funds);
-        jsonShop.put("baseInventory",inventoryToJson(baseInventory));
-        jsonShop.put("creamInventory",inventoryToJson(creamInventory));
-        jsonShop.put("toppingInventory",inventoryToJson(toppingInventory));
+        jsonShop.put("baseInventory", materialInventoryToJson(baseInventory));
+        jsonShop.put("creamInventory", materialInventoryToJson(creamInventory));
+        jsonShop.put("toppingInventory", materialInventoryToJson(toppingInventory));
         jsonShop.put("cakeInventory",cakeInventoryToJson(cakeInventory));
         return jsonShop;
     }
 
-    public JSONArray inventoryToJson(Map<String, Material> inventory) {
+    /*
+     * EFFECTS: returns a kind of material inventory of the shop as an JSONArray.
+     */
+    public JSONArray materialInventoryToJson(Map<String, Material> inventory) {
         JSONArray jsonArray = new JSONArray();
         for (String key: inventory.keySet()) {
             jsonArray.put(inventory.get(key).toJson());
@@ -178,6 +179,9 @@ public class CakeShop implements Writable {
         return jsonArray;
     }
 
+    /*
+     * EFFECTS: returns a cake inventory of the shop as an JSONArray.
+     */
     public JSONArray cakeInventoryToJson(Map<String, Cake> inventory) {
         JSONArray jsonArray = new JSONArray();
         for (String key: inventory.keySet()) {
