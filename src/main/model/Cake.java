@@ -3,6 +3,8 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.Objects;
+
 /*
  * Represents a cake.
  */
@@ -100,4 +102,22 @@ public class Cake implements Writable {
 
         return jsonCake;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Cake cake = (Cake) o;
+        return cakeBase.equals(cake.cakeBase) && cream.equals(cake.cream) && topping.equals(cake.topping);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cakeBase, cream, topping);
+    }
+
 }

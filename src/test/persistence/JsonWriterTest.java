@@ -57,7 +57,7 @@ public class JsonWriterTest {
             csg.getShop().getBaseInventory().get("Soft base").setInventory(5);
             csg.getShop().getCreamInventory().get("Pure cream").setInventory(5);
             csg.getShop().getToppingInventory().get("Apple topping").setInventory(5);
-            csg.getShop().makeCake("Soft base","Pure cream","Apple topping",20,3);
+            csg.getShop().makeCake("Soft base","Pure cream","Apple topping", 3);
 
             JsonWriter writer = new JsonWriter("./data/testWriterEditedCSG.json");
             writer.open();

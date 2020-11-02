@@ -1,6 +1,5 @@
 package ui;
 
-import exceptions.MaterialException;
 import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -21,8 +20,8 @@ public class CSG {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private static final String JSON_STORE = "./data/CSG.json";
-
     private Scanner input = new Scanner(System.in);                     //The input of player
+
 
     public CakeShop getShop() {
         return shop;
@@ -38,39 +37,6 @@ public class CSG {
 
     public int getCurrentRound() {
         return currentRound;
-    }
-
-    /*
-     * EFFECTS: run new game
-     */
-    public CSG() {
-        showGuide();
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
-        System.out.println();
-        System.out.println("You want to start a new game or resume from last save?");
-        System.out.println("input 1 to resume, any other key for new game");
-        String chose = input.next();
-        if (chose.equals("1")) {
-            loadCSG();
-            mainMenu();
-        } else {
-            newGame();
-        }
-    }
-
-    /*
-     * EFFECTS: create an CSG class for test, without run the game;
-     */
-    public CSG(int totalRound) {
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
-        //The initial fund of the shop
-        int initialFund = 1000;
-        //initialize the cake shop
-        this.shop = new CakeShop(initialFund,town.getMarket());
-        this.totalRound = totalRound;
-        currentRound = 1;
     }
 
     /*
@@ -103,6 +69,40 @@ public class CSG {
      */
     public void setCurrentRound(int currentRound) {
         this.currentRound = currentRound;
+    }
+
+    /*
+     * EFFECTS: ask user if want to resume a game or start a new one, load game if input 1,
+     *          start new game if input other
+     */
+    public CSG() {
+        showGuide();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        System.out.println();
+        System.out.println("You want to start a new game or resume from last save?");
+        System.out.println("input 1 to resume, any other key for new game");
+        String chose = input.next();
+        if (chose.equals("1")) {
+            loadCSG();
+            mainMenu();
+        } else {
+            newGame();
+        }
+    }
+
+    /*
+     * EFFECTS: create an CSG class for test, without run the game;
+     */
+    public CSG(int totalRound) {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        //The initial fund of the shop
+        int initialFund = 1000;
+        //initialize the cake shop
+        this.shop = new CakeShop(initialFund,town.getMarket());
+        this.totalRound = totalRound;
+        currentRound = 1;
     }
 
     /*
@@ -158,6 +158,7 @@ public class CSG {
 
         if (currentRound <= totalRound) {
             System.out.println("This is the " + currentRound + " round of the game");
+            System.out.println("There are " + (totalRound - currentRound) + " rounds before the game end");
             mainMenu();
         } else {
             System.out.println("Game over, you earned $" + shop.getFunds() + " Good job!");
@@ -273,33 +274,25 @@ public class CSG {
     }
 
     /*
-     * REQUIRES: input should be a number
      * MODIFIES: this
      * EFFECTS: chose the kind of material to buy.
      */
     protected void buyMaterial(String kind) {
         System.out.println("Which kind of " + kind + " you want to buy?");
-        for (int i = 1; i <= town.getMarket().get(kind).size(); i++) {
-            System.out.println("Input " + i + " for " + town.getMarket().get(kind).get(i - 1).getName());
+        for (Material m: town.getMarket().get(kind)) {
+            System.out.println("Input " + m.getSerialNumber() + " for " + m.getName());
         }
-        int answer = input.nextInt() - 1;
+        int answer;
         Material goodToBuy = null;
-        if (answer <= town.getMarket().get(kind).size() - 1) {
+        try {
+            answer = new Scanner(System.in).nextInt() - 1;
             goodToBuy = town.getMarket().get(kind).get(answer);
-        } else {
-            System.out.println("This is an Invalid input");
+        } catch (InputMismatchException | IndexOutOfBoundsException e) {
+            System.out.println("This is an Invalid input，please input one of the serial numbers");
             buyMaterial(kind);
         }
-
+        assert goodToBuy != null;
         choseAmountToBuy(goodToBuy);
-
-        System.out.println("Input 1 to keep shopping, input any other number to go back to main menu");
-        String decision = input.next().toLowerCase();
-        if (decision.equals("1")) {
-            shopping();
-        } else {
-            mainMenu();
-        }
     }
 
     /*
@@ -309,14 +302,26 @@ public class CSG {
      */
     protected void choseAmountToBuy(Material goodToBuy) {
         System.out.println("How many " + goodToBuy.getName() + " do you want to buy?");
-        int numberToBuy = input.nextInt();
+        int numberToBuy = 0;
+        try {
+            numberToBuy = new Scanner(System.in).nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("this is not an valid input");
+            choseAmountToBuy(goodToBuy);
+        }
         if (numberToBuy * goodToBuy.getPrice() > shop.getFunds()) {
             System.out.println("Sorry, you don't have enough fund");
         } else {
-            for (int i = 1; i <= numberToBuy; i++) {
-                shop.buyMaterial(goodToBuy);
-            }
+            shop.buyMaterial(goodToBuy,numberToBuy);
             System.out.println("You have successfully purchased " + numberToBuy + " " + goodToBuy.getName());
+        }
+
+        System.out.println("Input 1 to keep shopping, input any other number to go back to main menu");
+        String decision = input.next().toLowerCase();
+        if (decision.equals("1")) {
+            shopping();
+        } else {
+            mainMenu();
         }
     }
 
@@ -386,21 +391,41 @@ public class CSG {
      * EFFECTS: set the price for a kind of cake
      */
     protected int setPrice(String cakeMade) {
-        int price;
-        if (shop.getCakeInventory().get(cakeMade).getPrice() != -1) {
-            System.out.println("Do you want to reset the price? 1 for YES, 2 for No");
-            String answer = input.next();
-            if (answer.equals("1")) {
-                System.out.println("How much? Input an number");
-                price = input.nextInt();
-            } else {
-                price = shop.getCakeInventory().get(cakeMade).getPrice();
-            }
+        int price = 0;
+        if (shop.getCakeInventory().containsKey(cakeMade) &&
+                shop.getCakeInventory().get(cakeMade).getPrice() != 0) {
+            price = resetPrice(cakeMade);
         } else {
             System.out.println("Please input an integer for the price of this kind of cake");
-            price = input.nextInt();
+            try {
+                price = new Scanner(System.in).nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("please input an number");
+                setPrice(cakeMade);
+            }
         }
         shop.getCakeInventory().get(cakeMade).setPrice(price);
+        return price;
+    }
+
+    /*
+     * EFFECTS: set the price for a kind of cake if there already exist this kind of cake.
+     */
+    protected int resetPrice(String cakeMade) {
+        int price = 0;
+        System.out.println("Do you want to reset the price? 1 for YES, 2 for No");
+        String answer = input.next();
+        if (answer.equals("1")) {
+            System.out.println("How much? Input an number");
+            try {
+                price = new Scanner(System.in).nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("please input an number");
+                setPrice(cakeMade);
+            }
+        } else {
+            price = shop.getCakeInventory().get(cakeMade).getPrice();
+        }
         return price;
     }
 
@@ -408,18 +433,19 @@ public class CSG {
      * MODIFIES: this
      * EFFECTS: make cake and return true if any cake are made
      */
-    protected void makeCake() {
-        List<Material> used = new ArrayList<>();
-        used.add(select("cake base",shop.getBaseInventory()));
-        used.add(select("cream",shop.getCreamInventory()));
-        used.add(select("topping",shop.getToppingInventory()));
-
+    protected void makeCake(List<Material> used) {
         System.out.println("How many this kind of cake you want to make?");
-        int number = input.nextInt();
+        int number = 0;
+        try {
+            number = new Scanner(System.in).nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("please input an number");
+            makeCake(used);
+        }
         Cake cakeMade = new Cake(used.get(0), used.get(1), used.get(2));
 
         int result = shop.makeCake(used.get(0).getName(),
-                used.get(1).getName(), used.get(2).getName(), -1, number);
+                used.get(1).getName(), used.get(2).getName(), number);
         if (result != 0) {
             System.out.println("You do not have enough material");
             makeCakeMenu(false);
@@ -438,7 +464,11 @@ public class CSG {
             System.out.println("Below is the materials you have");
             showMaterialInventory(false);
         }
-        makeCake();
+        List<Material> used = new ArrayList<>();
+        used.add(select("cake base",shop.getBaseInventory()));
+        used.add(select("cream",shop.getCreamInventory()));
+        used.add(select("topping",shop.getToppingInventory()));
+        makeCake(used);
 
         System.out.println("input 1 to keep making cake, other to go back to main menu");
         String instruction = input.next();

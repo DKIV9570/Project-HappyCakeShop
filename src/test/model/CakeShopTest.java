@@ -1,8 +1,5 @@
 package model;
 
-import exceptions.MaterialException;
-import model.CakeShop;
-import model.Material;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -71,27 +68,27 @@ public class CakeShopTest {
 
     @Test
     void testBuyMaterial1() {
-        testShop.buyMaterial(base3);
-        testShop.buyMaterial(notAMaterial);
+        testShop.buyMaterial(base3,1);
+        testShop.buyMaterial(notAMaterial,1);
         assertEquals(testShop.getFunds(),990);
         assertEquals(testShop.getBaseInventory().get("base3").getInventory(),0);
     }
 
     @Test
     void testBuyMaterial2() {
-        testShop.buyMaterial(notAMaterial);
+        testShop.buyMaterial(notAMaterial,1);
         assertEquals(testShop.getFunds(),990);
     }
 
     @Test
     void testBuyMaterial3() {
-        testShop.buyMaterial(base2);
+        testShop.buyMaterial(base2,1);
         assertEquals(testShop.getFunds(),990);
-        testShop.buyMaterial(cream1);
+        testShop.buyMaterial(cream1,1);
         assertEquals(testShop.getFunds(),980);
-        testShop.buyMaterial(topping1);
+        testShop.buyMaterial(topping1,1);
         assertEquals(testShop.getFunds(),970);
-        testShop.buyMaterial(base2);
+        testShop.buyMaterial(base2,1);
         assertEquals(testShop.getFunds(),960);
         assertEquals(testShop.getBaseInventory().get("base2").getInventory(),2);
         assertEquals(testShop.getCreamInventory().get("cream1").getInventory(),1);
@@ -101,25 +98,25 @@ public class CakeShopTest {
     @Test
     void testMakeCake() {
         for (int i = 1; i <= 10; i++) {
-            testShop.buyMaterial(base1);
-            testShop.buyMaterial(cream1);
-            testShop.buyMaterial(topping1);
+            testShop.buyMaterial(base1,1);
+            testShop.buyMaterial(cream1,1);
+            testShop.buyMaterial(topping1,1);
 
-            testShop.buyMaterial(base2);
-            testShop.buyMaterial(cream2);
-            testShop.buyMaterial(topping2);
+            testShop.buyMaterial(base2,1);
+            testShop.buyMaterial(cream2,1);
+            testShop.buyMaterial(topping2,1);
         }
 
-        testShop.makeCake(base1.getName(),cream1.getName(),topping1.getName(),10,1);
+        testShop.makeCake(base1.getName(),cream1.getName(),topping1.getName(), 1);
 
 
 
-        testShop.makeCake(base1.getName(),cream1.getName(),topping1.getName(),10,1);
+        testShop.makeCake(base1.getName(),cream1.getName(),topping1.getName(), 1);
 
         String name1 = " \" base1/cream1/topping1 cake \" ";
         assertEquals(testShop.getCakeInventory().size(),1);
 
-        testShop.makeCake(base2.getName(),cream2.getName(),topping2.getName(),10,2);
+        testShop.makeCake(base2.getName(),cream2.getName(),topping2.getName(), 2);
 
         assertEquals(testShop.getCakeInventory().size(),2);
 
@@ -130,11 +127,11 @@ public class CakeShopTest {
         Resident resident1 = new Resident(market);
         Resident resident2 = new Resident(market);
         List<Resident> town = Arrays.asList(resident1);
-        testShop.buyMaterial(base1);
-        testShop.buyMaterial(cream1);
-        testShop.buyMaterial(topping1);
+        testShop.buyMaterial(base1,1);
+        testShop.buyMaterial(cream1,1);
+        testShop.buyMaterial(topping1,1);
 
-        testShop.makeCake(base1.getName(), cream1.getName(), topping1.getName(), 10000, 1);
+        testShop.makeCake(base1.getName(), cream1.getName(), topping1.getName(), 1);
         testShop.sellCake(town);
         assertEquals(testShop.getCakeInventory().size(),1);
     }
@@ -143,12 +140,12 @@ public class CakeShopTest {
     void testSellCake2() {
         Resident resident1 = new Resident(market);
         List<Resident> town = Arrays.asList(resident1);
-        testShop.buyMaterial(base1);
-        testShop.buyMaterial(cream1);
-        testShop.buyMaterial(topping1);
-        testShop.makeCake(base1.getName(),cream1.getName(),topping1.getName(),1,1);
-        String nameOfCake = " \" " + base1.getName() + "/" + cream1.getName() + "/" + topping1.getName() + " cake \" ";
+        testShop.buyMaterial(base1,1);
+        testShop.buyMaterial(cream1,1);
+        testShop.buyMaterial(topping1,1);
+        testShop.makeCake(base1.getName(),cream1.getName(),topping1.getName(), 1);
+
         testShop.sellCake(town);
-        assertEquals(testShop.getCakeInventory().get(nameOfCake).getInventory(),0);
+        assertEquals(testShop.getCakeInventory().size(),0);
     }
 }

@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,18 +80,18 @@ public class CakeShop implements Writable {
      * MODIFIES: this
      * EFFECTS: use the funds to buy materials in the market
      */
-    public void buyMaterial(Material material) {
-        if (funds >= material.getPrice()) {
-            funds -= material.getPrice();
+    public void buyMaterial(Material material, int number) {
+        if (funds >= material.getPrice() * number) {
+            funds -= material.getPrice() * number;
             switch (material.getKind()) {
                 case "cake base":
-                    baseInventory.get(material.getName()).addInventory(1);
+                    baseInventory.get(material.getName()).addInventory(number);
                     break;
                 case "cream":
-                    creamInventory.get(material.getName()).addInventory(1);
+                    creamInventory.get(material.getName()).addInventory(number);
                     break;
                 case "topping":
-                    toppingInventory.get(material.getName()).addInventory(1);
+                    toppingInventory.get(material.getName()).addInventory(number);
                     break;
                 default:
                     break;
@@ -99,11 +100,10 @@ public class CakeShop implements Writable {
     }
 
     /*
-     * REQUIRES:
      * MODIFIES: this
      * EFFECTS: use the chosen raw materials to make a cake
      */
-    public int makeCake(String base, String cream, String topping, int price, int number) {
+    public int makeCake(String base, String cream, String topping, int number) {
 
         try {
             baseInventory.get(base).consumeInventory(number);
@@ -123,27 +123,24 @@ public class CakeShop implements Writable {
             creamInventory.get(base).addInventory(number);
             return 3;
         }
-        return nameCake(base,cream,topping,price,number);
+        return nameCake(base,cream,topping, number);
     }
 
     /*
-     * REQUIRES:
      * MODIFIES: this
      * EFFECTS: name the cake
      */
-    public int nameCake(String base, String cream, String topping, int price, int number) {
+    public int nameCake(String base, String cream, String topping, int number) {
         String name = " \" " + base + "/" + cream + "/" + topping + " cake \" ";
         if (!cakeInventory.containsKey(name)) {
             Cake newCake = new Cake(baseInventory.get(base),creamInventory.get(cream),toppingInventory.get(topping));
             cakeInventory.put(name, newCake);
         }
-        cakeInventory.get(name).setPrice(price);
         cakeInventory.get(name).addInventory(number);
         return 0;
     }
 
     /*
-     * REQUIRES:
      * MODIFIES: this
      * EFFECTS: sell cake
      */
@@ -155,6 +152,14 @@ public class CakeShop implements Writable {
                 cakeBought.consumeInventory(1);
             }
         }
+        Iterator<String> iterator = cakeInventory.keySet().iterator();
+        while (iterator.hasNext()) {
+            String s = iterator.next();
+            if (cakeInventory.get(s).getInventory() == 0) {
+                iterator.remove();
+            }
+        }
+
     }
 
     @Override
@@ -189,5 +194,7 @@ public class CakeShop implements Writable {
         }
         return jsonArray;
     }
+
+
 
 }

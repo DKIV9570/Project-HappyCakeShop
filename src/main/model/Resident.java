@@ -56,8 +56,8 @@ public class Resident implements Writable {
     }
 
     /*
-     * EFFECTS: go through all kind of the cakes provided by the cake shop and purchase up to 1 cake.
-     *          Or not purchase if all the cake's price is over expect.
+     * EFFECTS: go through all kind of the cakes provided by the cake shop and returns the favorite cake.
+     *          Or return null if all the cake's price is over expect.
      */
     public Cake purchase(Collection<Cake> cakeInventory) {
         float favoredMost = 0;

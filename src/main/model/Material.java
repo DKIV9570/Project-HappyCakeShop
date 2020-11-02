@@ -7,6 +7,7 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /*
  * Represents a kind of material
@@ -83,5 +84,22 @@ public class Material implements Writable {
         jsonMaterial.put("serialNumber",serialNumber);
         jsonMaterial.put("inventory",inventory);
         return jsonMaterial;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Material material = (Material) o;
+        return Objects.equals(name, material.name) && Objects.equals(kind, material.kind);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, kind);
     }
 }
