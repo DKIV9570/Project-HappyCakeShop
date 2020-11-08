@@ -392,8 +392,8 @@ public class CSG {
      */
     protected int setPrice(String cakeMade) {
         int price = 0;
-        if (shop.getCakeInventory().containsKey(cakeMade) &&
-                shop.getCakeInventory().get(cakeMade).getPrice() != 0) {
+        if (shop.getCakeInventory().containsKey(cakeMade)
+                && shop.getCakeInventory().get(cakeMade).getPrice() != 0) {
             price = resetPrice(cakeMade);
         } else {
             System.out.println("Please input an integer for the price of this kind of cake");

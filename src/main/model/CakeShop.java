@@ -195,6 +195,4 @@ public class CakeShop implements Writable {
         return jsonArray;
     }
 
-
-
 }
