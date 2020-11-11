@@ -4,6 +4,7 @@ import model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ui.CSG;
+import ui.GameMenu;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +17,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /*
-This is a JsonReader to read json from file and get CSG
+This is a JsonReader to read json from file and get CSG/GameMenu
 referenced some design idea in the CPSC210.JsonSerializationDemo project
 */
 public class JsonReader {
@@ -33,6 +34,14 @@ public class JsonReader {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
         return parseCSG(jsonObject,csg);
+    }
+
+    // EFFECTS: reads GameMenu from file and returns it;
+    // throws IOException if an error occurs reading data from file
+    public GameMenu read(GameMenu gameMenu) throws IOException {
+        String jsonData = readFile(source);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        return parseGameMenu(jsonObject,gameMenu);
     }
 
     // EFFECTS: reads source file as string and returns it
@@ -53,6 +62,13 @@ public class JsonReader {
         return csg;
     }
 
+    // EFFECTS: parses Game menu from JSON object and returns it
+    private GameMenu parseGameMenu(JSONObject jsonObject,GameMenu gameMenu) {
+        //String name = jsonObject.getString("name");
+        getEnvironment(gameMenu, jsonObject);
+        return gameMenu;
+    }
+
     // MODIFIES: CSG
     // EFFECTS: parses the environment variables from JSON object and imply them to CSG
     private void getEnvironment(CSG csg, JSONObject jsonObject) {
@@ -66,6 +82,18 @@ public class JsonReader {
 
         csg.setTotalRound(jsonTR);
         csg.setCurrentRound(jsonCR);
+    }
+
+    // MODIFIES: GameMenu
+    // EFFECTS: parses the environment variables from JSON object and imply them to CSG
+    private void getEnvironment(GameMenu gameMenu, JSONObject jsonObject) {
+        JSONObject jsonShop = jsonObject.getJSONObject("shop");
+        JSONObject jsonTown = jsonObject.getJSONObject("town");
+        int jsonRR = jsonObject.getInt("roundRemain");
+
+        gameMenu.setShop(getShop(jsonObject));
+        gameMenu.setTown(getTown(jsonObject));
+        gameMenu.setRoundRemain(jsonRR);
     }
 
     // EFFECTS: parses the town from JSON object and return it

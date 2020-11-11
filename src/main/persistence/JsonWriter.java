@@ -2,13 +2,14 @@ package persistence;
 
 import org.json.JSONObject;
 import ui.CSG;
+import ui.GameMenu;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 /*
-This is a JsonWriter to write a CSG class to json and save it to file
+This is a JsonWriter to write a CSG class or a GameMenu class to json and save it to file
 referenced some design idea in the CPSC210.JsonSerializationDemo project
 */
 public class JsonWriter {
@@ -45,6 +46,20 @@ public class JsonWriter {
         jsonCSG.put("shop",jsonShop);
         jsonCSG.put("town",jsonTown);
         saveToFile(jsonCSG.toString(TAB));
+    }
+
+    /*
+     MODIFIES: this
+     EFFECTS: writes JSON representation of GameMenu to file
+     */
+    public void write(GameMenu gameMenu) {
+        JSONObject jsonGameMenu = new JSONObject();
+        JSONObject jsonTown = gameMenu.getTown().toJson();
+        JSONObject jsonShop = gameMenu.getShop().toJson();
+        jsonGameMenu.put("roundRemain",gameMenu.getRoundRemain());
+        jsonGameMenu.put("shop",jsonShop);
+        jsonGameMenu.put("town",jsonTown);
+        saveToFile(jsonGameMenu.toString(TAB));
     }
 
     /*
