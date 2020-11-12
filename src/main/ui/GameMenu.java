@@ -19,13 +19,13 @@ import java.util.Map;
 //The main menu of the cake shop game
 public class GameMenu extends JFrame {
     private static final String JSON_STORE = "./data/Happy Cake Shop.json";
-    private final JsonWriter jsonWriter;
-    private final JsonReader jsonReader;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
-    private final StatusBar statusBar;
-    private final Displayer displayer;
-    private final CommandBar commandBar;
-    private final ControlBar controlBar;
+    private StatusBar statusBar;
+    private Displayer displayer;
+    private CommandBar commandBar;
+    private ControlBar controlBar;
     private Music music = new Music();
     private boolean playing;
 
@@ -62,6 +62,14 @@ public class GameMenu extends JFrame {
         music.loop();
         playing = true;
 
+    }
+
+    /*
+     EFFECTS: initialize the game menu, only for test use
+     */
+    public GameMenu(int roundRemain) {
+        shop = new CakeShop(1000,town.getMarket());
+        this.roundRemain = roundRemain;
     }
 
     public int getRoundRemain() {

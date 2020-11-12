@@ -61,4 +61,38 @@ public class CakeTest {
         testCake.setInventory(20);
         assertEquals(testCake.getInventory(),20);
     }
+
+    @Test
+    void testEquals() {
+        Material material4 = new Material("a",20,"cake base",1);
+        Material material5 = new Material("b",10,"cream",2);
+        Material material6 = new Material("c",5,"topping",3);
+        Cake anotherCake = new Cake(material4,material5,material6);
+        assertTrue(testCake.equals(anotherCake));
+        anotherCake.setPrice(100);
+        assertTrue(testCake.equals(anotherCake));
+
+        Material material7 = new Material("d",20,"cake base",1);
+        Material material8 = new Material("e",10,"cream",2);
+        Material material9 = new Material("f",5,"topping",3);
+        Cake differentCake = new Cake(material7,material8,material9);
+        assertFalse(testCake.equals(differentCake));
+    }
+
+    @Test
+    void testHashCode() {
+        Material material4 = new Material("a",20,"cake base",1);
+        Material material5 = new Material("b",10,"cream",2);
+        Material material6 = new Material("c",5,"topping",3);
+        Cake anotherCake = new Cake(material4,material5,material6);
+        assertEquals(testCake.hashCode(),anotherCake.hashCode());
+        anotherCake.setPrice(100);
+        assertEquals(testCake.hashCode(),anotherCake.hashCode());
+
+        Material material7 = new Material("d",20,"cake base",1);
+        Material material8 = new Material("e",10,"cream",2);
+        Material material9 = new Material("f",5,"topping",3);
+        Cake differentCake = new Cake(material7,material8,material9);
+        assertNotEquals(testCake.hashCode(),differentCake.hashCode());
+    }
 }

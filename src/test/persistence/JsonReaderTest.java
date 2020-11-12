@@ -4,6 +4,7 @@ import model.Material;
 import model.Resident;
 import org.junit.jupiter.api.Test;
 import ui.CSG;
+import ui.GameMenu;
 
 import java.io.IOException;
 import java.util.List;
@@ -57,6 +58,38 @@ public class JsonReaderTest extends JsonTest {
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
+    }
+
+    @Test
+    void testReaderNewGameMenu() {
+        try {
+            GameMenu gameMenu;
+
+            JsonReader reader = new JsonReader("./data/testWriterNewGameMenu.json");
+            gameMenu = reader.read(new GameMenu(10));
+            assertEquals(3, gameMenu.getShop().getBaseInventory().size());
+            assertEquals(3, gameMenu.getShop().getCreamInventory().size());
+            assertEquals(3, gameMenu.getShop().getToppingInventory().size());
+            assertEquals(1000, gameMenu.getShop().getFunds());
+            assertEquals(0, gameMenu.getShop().getCakeInventory().size());
+            assertEquals(500, gameMenu.getTown().getResidents().size());
+            assertEquals(3, gameMenu.getTown().getMarket().size());
+
+            Material testMaterial = gameMenu.getShop().getBaseInventory().get("Soft base");
+            checkMaterial("Soft base",testMaterial.getPrice(),
+                    "cake base",1,0,testMaterial);
+            checkMaterialInventory(3,gameMenu.getShop().getBaseInventory());
+            checkMaterialInventory(3,gameMenu.getShop().getCreamInventory());
+            checkMaterialInventory(3,gameMenu.getShop().getToppingInventory());
+
+            Resident testResident = gameMenu.getTown().getResidents().get(0);
+            checkResident(9,testResident);
+
+
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+
     }
 
 }

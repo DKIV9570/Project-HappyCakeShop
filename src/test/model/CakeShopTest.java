@@ -133,7 +133,7 @@ public class CakeShopTest {
 
         testShop.makeCake(base1.getName(), cream1.getName(), topping1.getName(), 1);
         testShop.sellCake(town);
-        assertEquals(testShop.getCakeInventory().size(),1);
+        assertEquals(testShop.getCakeInventory().size(),0);
     }
 
     @Test
