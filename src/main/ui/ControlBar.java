@@ -116,7 +116,7 @@ public class ControlBar extends JPanel {
                 this.amount = amount;
                 gameMenu.makingCake(selected,amount);
             } else if (status.equals("setPrice")) {
-                gameMenu.setPrice(selected,amount,this.amount);
+                gameMenu.setPrice(selected,amount);
             }
         });
     }

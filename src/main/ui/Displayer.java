@@ -6,7 +6,6 @@ import model.Material;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
 
 //The scrollable displayer
 public class Displayer extends JScrollPane {
@@ -74,7 +73,8 @@ public class Displayer extends JScrollPane {
             for (String cakeName : shop.getCakeInventory().keySet()) {
                 int inventory = shop.getCakeInventory().get(cakeName).getInventory();
                 int price = shop.getCakeInventory().get(cakeName).getPrice();
-                cakes.append(cakeName).append(" / ").append(inventory).append(" / $").append(price).append("\n");
+                cakes.append("\n").append(cakeName).append(" / ")
+                        .append(inventory).append(" / $").append(price).append("\n");
             }
         }
         textArea.setText(cakes.toString());

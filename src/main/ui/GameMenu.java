@@ -307,7 +307,7 @@ public class GameMenu extends JFrame {
         Material cakeBase = shop.getBaseInventory().get(selected.get(0));
         Material cream = shop.getCreamInventory().get(selected.get(1));
         Material topping = shop.getToppingInventory().get(selected.get(2));
-        int maxAmount = Math.max(Math.max(cakeBase.getInventory(), cream.getInventory()),topping.getInventory());
+        int maxAmount = Math.min(Math.min(cakeBase.getInventory(), cream.getInventory()),topping.getInventory());
         controlBar.activateSpinner();
         controlBar.muteChoices();
         displayer.makeCake(cakeBase,cream,topping);
@@ -338,7 +338,7 @@ public class GameMenu extends JFrame {
      * MODIFIES: this
      * EFFECTS:  set the price of the new cake made
      */
-    public void setPrice(List<String> selected, int price,int amount) {
+    public void setPrice(List<String> selected, int price) {
         Material cakeBase = shop.getBaseInventory().get(selected.get(0));
         Material cream = shop.getCreamInventory().get(selected.get(1));
         Material topping = shop.getToppingInventory().get(selected.get(2));
