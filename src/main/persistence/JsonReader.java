@@ -85,7 +85,7 @@ public class JsonReader {
     }
 
     // MODIFIES: GameMenu
-    // EFFECTS: parses the environment variables from JSON object and imply them to CSG
+    // EFFECTS: parses the environment variables from JSON object and imply them to GameMenu
     private void getEnvironmentOfGM(GameMenu gameMenu, JSONObject jsonObject) {
         JSONObject jsonShop = jsonObject.getJSONObject("shop");
         JSONObject jsonTown = jsonObject.getJSONObject("town");
