@@ -58,20 +58,20 @@ public class JsonReader {
     // EFFECTS: parses CSG from JSON object and returns it
     private CSG parseCSG(JSONObject jsonObject,CSG csg) {
         //String name = jsonObject.getString("name");
-        getEnvironment(csg, jsonObject);
+        getEnvironmentOfCSG(csg, jsonObject);
         return csg;
     }
 
     // EFFECTS: parses Game menu from JSON object and returns it
     private GameMenu parseGameMenu(JSONObject jsonObject,GameMenu gameMenu) {
         //String name = jsonObject.getString("name");
-        getEnvironment(gameMenu, jsonObject);
+        getEnvironmentOfGM(gameMenu, jsonObject);
         return gameMenu;
     }
 
     // MODIFIES: CSG
     // EFFECTS: parses the environment variables from JSON object and imply them to CSG
-    private void getEnvironment(CSG csg, JSONObject jsonObject) {
+    private void getEnvironmentOfCSG(CSG csg, JSONObject jsonObject) {
         JSONObject jsonShop = jsonObject.getJSONObject("shop");
         JSONObject jsonTown = jsonObject.getJSONObject("town");
         int jsonTR = jsonObject.getInt("totalRound");
@@ -86,7 +86,7 @@ public class JsonReader {
 
     // MODIFIES: GameMenu
     // EFFECTS: parses the environment variables from JSON object and imply them to CSG
-    private void getEnvironment(GameMenu gameMenu, JSONObject jsonObject) {
+    private void getEnvironmentOfGM(GameMenu gameMenu, JSONObject jsonObject) {
         JSONObject jsonShop = jsonObject.getJSONObject("shop");
         JSONObject jsonTown = jsonObject.getJSONObject("town");
         int jsonRR = jsonObject.getInt("roundRemain");
