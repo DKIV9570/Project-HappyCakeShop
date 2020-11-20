@@ -63,7 +63,7 @@
                     "name": "Nuts topping",
                     "inventory": 3
                },
-               "inventory": 3,
+               "inventory": 2,
                "cakeBase": {
                     "serialNumber": 1,
                     "price": 19,
@@ -72,7 +72,7 @@
                     "inventory": 0
                }
           }],
-          "funds": 957,
+          "funds": 1097,
           "baseInventory": [
                {
                     "serialNumber": 1,
@@ -7172,5 +7172,5 @@
                }
           ]
      },
-     "roundRemain": 4
+     "roundRemain": 3
 }
