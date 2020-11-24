@@ -26,3 +26,9 @@ and use them to make cakes, set the price for the cakes, and add them to cake in
 - As a user, I want to be able to view the material inventory
 - As a user, I want to be able to save my game progress to file
 - As a user, I want to be able to be able to load my game progress from file
+
+## Phase 4: Task 2
+
+I implemented the Map interface, actually it has been used in several classes, for example, in the Cakeshop class,
+I used 4 Maps to represent the inventory of each kind of material, also the inventory of the cake. In Resident class, 
+I used a Map to represent the favor of the resident.

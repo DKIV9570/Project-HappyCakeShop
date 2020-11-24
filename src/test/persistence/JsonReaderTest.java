@@ -7,9 +7,9 @@ import ui.CSG;
 import ui.GameMenu;
 
 import java.io.IOException;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /*
  * Unit tests for the JsonReader class, referenced some design idea of CPSC210.JsonSerializationDemo project
